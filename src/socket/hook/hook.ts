@@ -3,7 +3,7 @@ import SocketController from "../controller/controller";
 export default class SocketHook extends EventTarget {
   static EVENT = new Event("socket-hook-init");
 
-  private onmessage?: (event: MessageEvent) => void;
+  private onmessageHandlers: ((event: MessageEvent) => void)[] = [];
   public socket?: WebSocket;
 
   constructor() {
@@ -11,7 +11,7 @@ export default class SocketHook extends EventTarget {
   }
 
   public withOnMessageHandler(handler: (event: MessageEvent) => void): this {
-    this.onmessage = handler;
+    this.onmessageHandlers.push(handler);
 
     return this;
   }
@@ -31,22 +31,29 @@ export default class SocketHook extends EventTarget {
 
     return {
       __proto__: null,
+      configurable: true,
       get() {
         return null;
       },
       set(value: (event: MessageEvent) => void) {
         socketWrapper.socket = this as unknown as WebSocket;
 
-        socketWrapper.socket.addEventListener("message", value);
+        socketWrapper.socket.addEventListener(
+          "message",
+          new Proxy(value, {
+            apply(target, thisArg, args: [event: MessageEvent]) {
+              const result = target.apply(thisArg, args);
+
+              socketWrapper.onmessageHandlers.forEach((handler) =>
+                handler(args[0]),
+              );
+
+              return result;
+            },
+          }),
+        );
 
         SocketController.addWsServer(value.bind(socketWrapper.socket));
-
-        if (typeof socketWrapper.onmessage === "function") {
-          socketWrapper.socket.addEventListener(
-            "message",
-            socketWrapper.onmessage.bind(this),
-          );
-        }
 
         socketWrapper.dispatchEvent(SocketHook.EVENT);
       },
