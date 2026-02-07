@@ -21,10 +21,10 @@ export class Serializer {
     this.#buffer.push(243);
 
     if (flag == PHOTON_FLAGS.ACTION) {
-      this.#buffer.push(header);
+      this.raw([header]);
     }
 
-    this.#buffer.push(flag);
+    this.integerU32(flag, false);
   }
 
   raw(value: number[]): Serializer {
@@ -38,7 +38,9 @@ export class Serializer {
       this.#buffer.push(SerializerMarkers.U32);
     }
 
-    this.#buffer.push(...to32xConvertedByte(value));
+    const bytes = Array.from(to32xConvertedByte(value));
+
+    this.#buffer.push(...bytes);
 
     return this;
   }
@@ -52,11 +54,11 @@ export class Serializer {
     return this;
   }
 
-  string(value: string, retract: number = 0): Serializer {
+  string(value: string): Serializer {
     const bytes = new TextEncoder().encode(value);
 
     this.#buffer.push(SerializerMarkers.STRING);
-    this.#buffer.push(...to32xConvertedByte(bytes.length + retract));
+    this.#buffer.push(...to16xConvertedByte(bytes.length));
     this.#buffer.push(...bytes);
 
     return this;

@@ -114,7 +114,7 @@ const betterSword = (pid = GLOBAL_PID): Uint8Array => {
   );
 
   packet.integerU32(pid);
-  packet.integerU16(17478, false); // probably ITEM_WEAPON
+  packet.integerU16(17988, false); // probably ITEM_WEAPON
 
   /* It's either 1 or 2, probably 2 for weapons that modify entity properties or
    spawn other items/objects/entities
@@ -130,17 +130,19 @@ const betterSword = (pid = GLOBAL_PID): Uint8Array => {
   /* Sword ID */
   packet.integerU32(8);
 
-  packet.string("variantId", -1);
+  packet.string("variantId");
   packet.integerU32(0);
 
-  packet.string("updateItemState", -1);
+  packet.string("updateItemState");
   packet.integerU32(4);
 
   /* Trail */
   packet.raw([254]);
   packet.integerU32(0);
 
-  return new Uint8Array(packet.end(false));
+  const buffer = packet.end(false);
+
+  return new Uint8Array(buffer);
 };
 
 test("Serializer matches expected", () => {
