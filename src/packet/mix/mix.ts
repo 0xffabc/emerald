@@ -108,7 +108,7 @@ export class Mix {
     ]);
   }
 
-  oldKick(pid: number) {
+  static oldKick(pid: number) {
     return new Uint8Array([
       243,
       2,

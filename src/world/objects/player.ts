@@ -2,6 +2,7 @@ import { ImmortalityExploit } from "../../hack/exploits/immortality";
 import { InfiniteWeaponExploit } from "../../hack/exploits/infinite-weapon";
 import { RapidFireExploit } from "../../hack/exploits/rapid-fire";
 import { to32xConvertedByte } from "../../packet/core/utils";
+import { Mix } from "../../packet/mix/mix";
 import SocketController from "../../socket/controller/controller";
 import type { Weapon } from "./weapon";
 
@@ -9,12 +10,14 @@ export class Player {
   public id: number;
   public x: number;
   public y: number;
+  public z: number;
   public weapon?: Weapon;
 
-  constructor(id: number, x: number, y: number, weapon?: Weapon) {
+  constructor(id: number, x: number, y: number, z: number, weapon?: Weapon) {
     this.id = id;
     this.x = x;
     this.y = y;
+    this.z = z;
     this.weapon = weapon;
   }
 
@@ -115,5 +118,19 @@ export class Player {
     const exploit = new InfiniteWeaponExploit(weapon, this);
 
     exploit.send();
+  }
+
+  performCrashMovement() {
+    SocketController.simulateServerPacket(Array.from(Mix.movement(this.id)));
+  }
+
+  performOldKick() {
+    SocketController.simulateServerPacket(Array.from(Mix.oldKick(this.id)));
+  }
+
+  spawnCrashClone() {
+    SocketController.simulateServerPacket(
+      Array.from(Mix.cube(this.id, this.x, this.y, this.z)),
+    );
   }
 }

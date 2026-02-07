@@ -29,7 +29,7 @@ export default class SocketHandler extends SocketHook {
         ];
 
         gamePlayers.forEach((id) => {
-          const player = new Player(+id, 0, 0);
+          const player = new Player(+id, 0, 0, 0);
 
           World.PlayerManager.addPlayer(player);
         });
