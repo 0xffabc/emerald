@@ -11,6 +11,28 @@ export class Weapon {
     return `Weapon(name=${Weapons[this.id] ?? "Unknown"}, id=${this.id})`;
   }
 
+  toFireEvent(forPlayer: number): Uint8Array {
+    const packet: Serializer = new Serializer(
+      PHOTON_HEADERS.TYPE_4,
+      PHOTON_FLAGS.ACTION,
+    );
+
+    packet.integerU32(forPlayer);
+    packet.integerU16(17988, false);
+
+    packet.integerU32(1, false);
+    packet.string("isFiring");
+
+    packet.integerU16(28417, false);
+
+    packet.raw([254]);
+    packet.integerU32(0);
+
+    const buffer = packet.end(false);
+
+    return new Uint8Array(buffer);
+  }
+
   toServerUseBytes(forPlayer: number): Uint8Array {
     const packet: Serializer = new Serializer(
       PHOTON_HEADERS.TYPE_4,
