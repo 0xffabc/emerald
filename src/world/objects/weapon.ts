@@ -3,15 +3,25 @@ import { Weapons } from "../../packet/constants/weapons";
 import { Serializer } from "../../packet/serialize/serialize";
 
 export class Weapon {
-  get id(): number {
+  public get id(): number {
     return Weapons.NONE;
   }
 
-  toString(): string {
+  public get type(): number {
+    return 1;
+  }
+
+  public get dataType(): number {
+    return 3;
+  }
+
+  public toString(): string {
     return `Weapon(name=${Weapons[this.id] ?? "Unknown"}, id=${this.id})`;
   }
 
-  toFireEvent(forPlayer: number): Uint8Array {
+  public intermediateProcess(_packet: Serializer) {}
+
+  public toFireEvent(forPlayer: number): Uint8Array {
     const packet: Serializer = new Serializer(
       PHOTON_HEADERS.TYPE_4,
       PHOTON_FLAGS.ACTION,
@@ -33,7 +43,7 @@ export class Weapon {
     return new Uint8Array(buffer);
   }
 
-  toServerUseBytes(forPlayer: number): Uint8Array {
+  public toServerUseBytes(forPlayer: number): Uint8Array {
     const packet: Serializer = new Serializer(
       PHOTON_HEADERS.TYPE_4,
       PHOTON_FLAGS.ACTION,
@@ -42,12 +52,12 @@ export class Weapon {
     packet.integerU32(forPlayer);
     packet.integerU16(17988, false);
 
-    packet.integerU32(1, false);
+    packet.integerU32(this.type, false);
     packet.string("currentItem");
 
-    packet.integerU32(1140850688, false);
-    packet.integerU32(57868292, false);
-    packet.integerU32(1954115685, false);
+    packet.raw([68]);
+    packet.integerU32(this.dataType, false);
+    packet.string("type");
 
     packet.integerU32(this.id);
 
@@ -56,6 +66,8 @@ export class Weapon {
 
     packet.string("updateItemState");
     packet.integerU32(4);
+
+    this.intermediateProcess(packet);
 
     packet.raw([254]);
     packet.integerU32(0);

@@ -1,15 +1,11 @@
-/**
- * // ! - requires World/Objects/Weapon update to support it
- */
-
 export enum Weapons {
   NONE = 255,
   RAIL_GUN = 6,
   SWORD = 8,
-  GROWTH_GUN = 62, // !
+  GROWTH_GUN = 62,
   PISTOL = 12,
-  CUBE_GUN = 11, // !
-  IMPULSE_GUN = 2, // !
+  CUBE_GUN = 11,
+  IMPULSE_GUN = 2,
   BAZOOKA = 4,
   HEAL_GUN = 70,
   DOUBLE_PISTOL = 13,
