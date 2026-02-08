@@ -3,6 +3,8 @@ import { Weapons } from "../../packet/constants/weapons";
 import { Serializer } from "../../packet/serialize/serialize";
 
 export class Weapon {
+  public static objectID = 0;
+
   public get id(): number {
     return Weapons.NONE;
   }
@@ -50,7 +52,7 @@ export class Weapon {
     );
 
     packet.integerU32(forPlayer);
-    packet.integerU16(17988, false);
+    packet.string("ID", false);
 
     packet.integerU32(this.type, false);
     packet.string("currentItem");
@@ -70,9 +72,13 @@ export class Weapon {
     this.intermediateProcess(packet);
 
     packet.raw([254]);
-    packet.integerU32(0);
+    packet.integerU32(Weapon.objectID++ % 255);
 
     const buffer = packet.end(false);
+
+    const logger = ((window as any).HackInterface as any).Logging as any;
+
+    logger.log(`Sending Weapon Use Event: ${buffer.toString()}`);
 
     return new Uint8Array(buffer);
   }

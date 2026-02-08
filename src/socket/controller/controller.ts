@@ -16,7 +16,7 @@ export default class SocketController {
 
   static simulateServerPacket(packet: number[]) {
     this.wsServers.forEach((server) =>
-      server({ data: new Uint8Array(packet) }),
+      server({ data: new Uint8Array(packet).buffer }),
     );
   }
 

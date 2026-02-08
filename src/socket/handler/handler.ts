@@ -3,6 +3,7 @@ import SocketController from "../controller/controller";
 import { World } from "../../world/world";
 import { Player } from "../../world/objects/player";
 import { Intermediate } from "../../gui/intermediate";
+import { HackInterface } from "../../global/interface";
 
 export default class SocketHandler extends SocketHook {
   constructor() {
@@ -22,24 +23,84 @@ export default class SocketHandler extends SocketHook {
 
     const decodedText = String.fromCharCode.apply(null, packet);
 
+    if (!World.myPlayerInit?.username?.length) {
+      const match = decodedText.match(/\"username":\"(\w+)\"/gim);
+
+      if (match && match.length > 0) {
+        World.myPlayerInit = {
+          username: match[0].split(':"')[1].split('"')[0],
+        };
+
+        Intermediate.notification(
+          `Username match: ${World.myPlayerInit.username}`,
+        );
+
+        HackInterface.Logging.log(
+          "Set MyPlayer.Username=" + World.myPlayerInit.username,
+        );
+      }
+    }
+
     if (decodedText.includes("activeSpawnRole")) {
-      const players = String.fromCharCode.apply(null, packet);
+      const players = String.fromCharCode
+        .apply(null, packet)
+        .replace(/[^\x20-\x7E\r\n\t{}\[\],:"'0-9a-zA-Z\s\-\.]/g, "");
+
+      HackInterface.Logging.log(
+        "Received raw player format with corresponding IDs: " + players,
+      );
+
+      const sidMatches = players.match(
+        /"DefaultPlayModeSpawnRole":(\d{6})/gim,
+      )!!;
+
+      const myPlayerSid = sidMatches[0].split(":")[1];
+
+      Intermediate.notification(`Set MyPlayer.SID=${myPlayerSid}`);
 
       const gamePlayers = [
         ...new Set(players.match(/(\d+)/gm)!!.filter((e) => e.length == 6)),
       ];
 
+      HackInterface.Logging.log(
+        `Received player list: ${gamePlayers}, MyPlayer sid matches: ${sidMatches.join(", ")}`,
+      );
+
       gamePlayers.forEach((id) => {
         const player = new Player(+id, 0, 0, 0);
 
         World.PlayerManager.addPlayer(player);
+
+        try {
+          const e = document.createElement("option");
+
+          e.innerHTML = "" + player.id;
+          e.value = "" + player.id;
+
+          document.querySelector("#select1")!!.append(e);
+        } catch (error) {
+          Intermediate.notification(`Error creating option element: ${error}`);
+        }
       });
 
-      World.myPlayer = World.PlayerManager.players[0];
+      document.querySelector("#players")!!.innerHTML = decodedText;
 
-      Intermediate.notification(`Set myPlayer.PID to ${World.myPlayer.id}`);
+      World.myPlayer = World.PlayerManager.players.find(
+        (player) => "" + player.id == myPlayerSid,
+      )!!;
+
+      Intermediate.notification(`Set MyPlayer.PID=${World.myPlayer.id}`);
+
+      HackInterface.Logging.log(`MyPlayer.PID is ${World.myPlayer.id}`);
 
       this.dispatchEvent(new Event("world-ready"));
+    } else if (decodedText.includes("currentItemD")) {
+      HackInterface.Logging.log(
+        "Likely received a weapon change packet: " +
+          decodedText +
+          ", bin: " +
+          packet.join(" "),
+      );
     }
   }
 }

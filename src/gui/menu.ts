@@ -31,24 +31,24 @@ client_menu.innerHTML = `
         <column>
           <table style = "color: white">
             <tr>
-              <td> <span onclick = "top.packets.cube_gun(null, top.packets.cubeID)"> Cube-Gun </span> </td>
-              <td> <span onclick = "top.packets.impulse_gun()"> Impulse Gun </span> </td>
-              <td> <span onclick = "top.packets.bazooka()"> Bazooka</span> </td>
+              <td> <span onclick = "window.HackInterface.Weapons.CubeGun()"> Cube-Gun </span> </td>
+              <td> <span onclick = "window.HackInterface.Weapons.ImpulseGun()"> Impulse Gun </span> </td>
+              <td> <span onclick = "window.HackInterface.Weapons.Bazooka()"> Bazooka</span> </td>
             </tr>
             <tr>
-              <td> <span onclick = "top.packets.pistols()">Double Revoliers </span> </td>
-              <td> <span onclick = "top.packets.heal_gun()"> Heal Gun</span> </td>
-              <td> <span onclick = "top.packets.central()"> Colt 45</span> </td>
+              <td> <span onclick = "window.HackInterface.Weapons.DoublePistol()"> Double Revoliers </span> </td>
+              <td> <span onclick = "window.HackInterface.Weapons.HealGun()"> Heal Gun</span> </td>
+              <td> <span onclick = "window.HackInterface.Weapons.CentralGun()"> Colt 45</span> </td>
             </tr>
             <tr>
-              <td> <span onclick = "top.packets.shotgun()"> Shotgun</span> </td>
-              <td> <span onclick = "top.packets.shuriken()"> Shuriken</span> </td>
-              <td> <span onclick = "top.packets.rail()"> Rail</span> </td>
+              <td> <span onclick = "window.HackInterface.Weapons.Shotgun()"> Shotgun</span> </td>
+              <td> <span onclick = "window.HackInterface.Weapons.Shuriken()"> Shuriken</span> </td>
+              <td> <span onclick = "window.HackInterface.Weapons.RailGun()"> Rail</span> </td>
             </tr>
             <tr>
-              <td> <span onclick = "top.packets.sword()"> Sword </span> </td>
-              <td> <span onclick = "top.packets.growthgun()"> Slapgun Spawner </span> </td>
-              <td> <span onclick = "top.packets.pistol()"> Pistol </span> </td>
+              <td> <span onclick = "window.HackInterface.Weapons.Sword()"> Sword </span> </td>
+              <td> <span onclick = "window.HackInterface.Weapons.GrowthGun()"> Slapgun Spawner </span> </td>
+              <td> <span onclick = "window.HackInterface.Weapons.Pistol()"> Pistol </span> </td>
             </tr>
           </table> <br>
         <span onclick = "top.packets.rapidon()"> Rapid Fire ╞ </span>
@@ -99,7 +99,7 @@ client_menu.innerHTML = `
         Players data: <span id = "players"> </span>
         By @0xffabc on YT and discord
         </column>
-        <column id = "logging" style = "display: none; overflow-y: scroll; max-width: 100%; max-height: 100%; width: 100%; height: 100%; scrollbar-width: none">
+        <column id = "logging" style = "display: none; overflow-y: scroll; max-width: 100%; max-height: 100%; width: 100%; height: 100%; scrollbar-width: none; word-break: break-all">
 
         </column>
         <column style = "display: none; overflow: scroll; max-width: 100%; max-height: 100%; width: 100%; height: 100%; scrollbar-width: none">

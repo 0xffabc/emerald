@@ -55,11 +55,14 @@ export class Serializer {
     return this;
   }
 
-  string(value: string): Serializer {
+  string(value: string, flag: boolean = true): Serializer {
     const bytes = new TextEncoder().encode(value);
 
-    this.#buffer.push(SerializerMarkers.STRING);
-    this.#buffer.push(...to16xConvertedByte(bytes.length));
+    if (flag) {
+      this.#buffer.push(SerializerMarkers.STRING);
+      this.#buffer.push(...to16xConvertedByte(bytes.length));
+    }
+
     this.#buffer.push(...bytes);
 
     return this;

@@ -1,3 +1,4 @@
+import { Intermediate } from "../../gui/intermediate";
 import SocketController from "../controller/controller";
 
 export default class SocketHook extends EventTarget {
@@ -38,22 +39,21 @@ export default class SocketHook extends EventTarget {
       set(value: (event: MessageEvent) => void) {
         socketWrapper.socket = this as unknown as WebSocket;
 
+        socketWrapper.socket.addEventListener("message", value);
         socketWrapper.socket.addEventListener(
           "message",
-          new Proxy(value, {
-            apply(target, thisArg, args: [event: MessageEvent]) {
-              const result = target.apply(thisArg, args);
-
-              socketWrapper.onmessageHandlers.forEach((handler) =>
-                handler(args[0]),
-              );
-
-              return result;
-            },
-          }),
+          (event: MessageEvent) => {
+            socketWrapper.onmessageHandlers.forEach((handler) =>
+              handler(event),
+            );
+          },
         );
 
-        SocketController.addWsServer(value.bind(socketWrapper.socket));
+        SocketController.addWsServer(value);
+
+        ((top as any).console as Console).log(value.toString());
+
+        Intermediate.notification("Socket initialized");
 
         socketWrapper.dispatchEvent(SocketHook.EVENT);
       },
