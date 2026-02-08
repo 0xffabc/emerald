@@ -1,3 +1,4 @@
+import { Intermediate } from "../gui/intermediate";
 import { PHOTON_FLAGS, PHOTON_HEADERS } from "../packet/constants/photon";
 import { Serializer } from "../packet/serialize/serialize";
 import SocketController from "../socket/controller/controller";
@@ -33,6 +34,87 @@ class HackInterface {
       if (element) {
         element.innerHTML += `<p style = "font-size: 9px">${message}</p>`;
       }
+    }
+  };
+
+  static Exploits = class {
+    private static infWeaponInterval: number = 0;
+    private static rapidFireInterval: number = 0;
+    private static invisibleHitInterval: number = 0;
+
+    static infiniteWeapon() {
+      if (this.infWeaponInterval > 0) {
+        clearInterval(this.infWeaponInterval);
+
+        this.infWeaponInterval = 0;
+
+        return;
+      }
+
+      if (!World.myPlayer?.weapon) {
+        return Intermediate.notification("No weapon equipped");
+      }
+
+      const interval = setInterval(() => {
+        World.myPlayer?.applyInfiniteWeaponExploit(World.myPlayer.weapon!!);
+      }, 4000);
+
+      this.infWeaponInterval = interval;
+
+      return Intermediate.notification("Infinite weapon exploit activated");
+    }
+
+    static rapidFireExploit() {
+      if (this.rapidFireInterval > 0) {
+        clearInterval(this.rapidFireInterval);
+
+        this.rapidFireInterval = 0;
+
+        return;
+      }
+
+      if (!World.myPlayer?.weapon) {
+        return Intermediate.notification("No weapon equipped");
+      }
+
+      const interval = setInterval(() => {
+        if (World.MouseManager.isLeftDown()) {
+          World.myPlayer?.applyRapidFireExploit(World.myPlayer.weapon!!);
+          SocketController.simulateServerPacket(
+            Array.from(
+              World.myPlayer?.weapon?.toFireEvent(World.myPlayer.id)!!,
+            ),
+          );
+        }
+      }, 400);
+
+      this.rapidFireInterval = interval;
+
+      return Intermediate.notification("Rapid fire exploit activated");
+    }
+
+    static invisibleHitExploit() {
+      if (this.invisibleHitInterval > 0) {
+        clearInterval(this.invisibleHitInterval);
+
+        this.invisibleHitInterval = 0;
+
+        return;
+      }
+
+      if (!World.myPlayer?.weapon) {
+        return Intermediate.notification("No weapon equipped");
+      }
+
+      const interval = setInterval(() => {
+        if (World.MouseManager.isLeftDown()) {
+          World.myPlayer?.applyInvisibleHitExploit(World.myPlayer.weapon!!);
+        }
+      }, 700);
+
+      this.invisibleHitInterval = interval;
+
+      return Intermediate.notification("Invisible hit exploit activated");
     }
   };
 

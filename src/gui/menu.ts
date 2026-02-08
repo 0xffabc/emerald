@@ -51,9 +51,9 @@ client_menu.innerHTML = `
               <td> <span onclick = "window.HackInterface.Weapons.Pistol()"> Pistol </span> </td>
             </tr>
           </table> <br>
-        <span onclick = "top.packets.rapidon()"> Rapid Fire ╞ </span>
-          <span onclick = "top.packets.invishiton()" style = "transform: translateX(50%)"> Invisible hit ╞ </span>
-        <span onclick = "top.packets.infon()"> Infinity ╞</span>
+        <span onclick = "window.HackInterface.Exploits.rapidFireExploit()"> Rapid Fire ╞ </span>
+          <span onclick = "window.HackInterface.Exploits.invisibleHitExploit()"> Invisible hit ╞ </span>
+        <span onclick = "window.HackInterface.Exploits.infiniteWeapon()"> Infinity ╞</span>
         </column>
         <column style="display: none">
         <span onclick = "top.packets.immortality()"> Buble</span>

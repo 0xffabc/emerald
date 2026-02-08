@@ -94,13 +94,6 @@ export default class SocketHandler extends SocketHook {
       HackInterface.Logging.log(`MyPlayer.PID is ${World.myPlayer.id}`);
 
       this.dispatchEvent(new Event("world-ready"));
-    } else if (decodedText.includes("currentItemD")) {
-      HackInterface.Logging.log(
-        "Likely received a weapon change packet: " +
-          decodedText +
-          ", bin: " +
-          packet.join(" "),
-      );
     }
   }
 }

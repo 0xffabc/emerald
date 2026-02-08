@@ -76,10 +76,6 @@ export class Weapon {
 
     const buffer = packet.end(false);
 
-    const logger = ((window as any).HackInterface as any).Logging as any;
-
-    logger.log(`Sending Weapon Use Event: ${buffer.toString()}`);
-
     return new Uint8Array(buffer);
   }
 }
