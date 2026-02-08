@@ -11,10 +11,10 @@ const event = weapon.toFireEvent(pid);
 const oneEvent = new Uint8Array([
   243,
   4,
-  29,
+  30,
   0,
   3,
-  22,
+  23,
   105,
   ...to32xConvertedByte(pid),
   70,
@@ -45,5 +45,5 @@ const oneEvent = new Uint8Array([
 ]);
 
 test("weapon.toFireEvent should work properly", () => {
-  expect(event).toEqual(oneEvent);
+  expect(event).toStrictEqual(oneEvent);
 });

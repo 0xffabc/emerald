@@ -1,8 +1,12 @@
+import { Intermediate } from "../../gui/intermediate";
+
 export default class SocketController {
   static sockets: WebSocket[] = [];
   static wsServers: ((event: any) => void)[] = [];
 
   static addSocket(socket: WebSocket) {
+    Intermediate.notification(`Socket ${socket.url} connected`);
+
     this.sockets.push(socket);
   }
 
