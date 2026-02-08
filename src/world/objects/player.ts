@@ -1,5 +1,6 @@
 import { ImmortalityExploit } from "../../hack/exploits/immortality";
 import { InfiniteWeaponExploit } from "../../hack/exploits/infinite-weapon";
+import { InvisibleHitExploit } from "../../hack/exploits/invisible-hit";
 import { RapidFireExploit } from "../../hack/exploits/rapid-fire";
 import { to32xConvertedByte } from "../../packet/core/utils";
 import { Mix } from "../../packet/mix/mix";
@@ -13,7 +14,13 @@ export class Player {
   public z: number;
   public weapon?: Weapon;
 
-  constructor(id: number, x: number, y: number, z: number, weapon?: Weapon) {
+  public constructor(
+    id: number,
+    x: number,
+    y: number,
+    z: number,
+    weapon?: Weapon,
+  ) {
     this.id = id;
     this.x = x;
     this.y = y;
@@ -21,7 +28,7 @@ export class Player {
     this.weapon = weapon;
   }
 
-  setWeapon(weapon: Weapon) {
+  public setWeapon(weapon: Weapon) {
     const packet = weapon.toServerUseBytes(this.id);
 
     SocketController.simulateServerPacket(Array.from(packet));
@@ -29,7 +36,7 @@ export class Player {
     this.weapon = weapon;
   }
 
-  setHealth(health: number) {
+  public setHealth(health: number) {
     SocketController.simulateServerPacket([
       243,
       4,
@@ -102,33 +109,39 @@ export class Player {
     ]);
   }
 
-  applyImmortalityExploit() {
+  public applyImmortalityExploit() {
     const exploit = new ImmortalityExploit(this.id);
 
     exploit.send();
   }
 
-  applyRapidFireExploit(weapon: Weapon) {
+  public applyRapidFireExploit(weapon: Weapon) {
     const exploit = new RapidFireExploit(weapon, this);
 
     exploit.send();
   }
 
-  applyInfiniteWeaponExploit(weapon: Weapon) {
+  public applyInfiniteWeaponExploit(weapon: Weapon) {
     const exploit = new InfiniteWeaponExploit(weapon, this);
 
     exploit.send();
   }
 
-  performCrashMovement() {
+  public applyInvisibleHitExploit(weapon: Weapon) {
+    const exploit = new InvisibleHitExploit(weapon, this);
+
+    exploit.send();
+  }
+
+  public performCrashMovement() {
     SocketController.simulateServerPacket(Array.from(Mix.movement(this.id)));
   }
 
-  performOldKick() {
+  public performOldKick() {
     SocketController.simulateServerPacket(Array.from(Mix.oldKick(this.id)));
   }
 
-  spawnCrashClone() {
+  public spawnCrashClone() {
     SocketController.simulateServerPacket(
       Array.from(Mix.cube(this.id, this.x, this.y, this.z)),
     );
