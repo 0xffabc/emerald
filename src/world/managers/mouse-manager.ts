@@ -12,8 +12,6 @@ export class MouseManager {
       (event) => {
         if (event.button === 0) {
           this.leftMouseDown = true;
-
-          (top as any).console.log("Left mouse button down");
         } else if (event.button === 2) {
           this.rightMouseDown = true;
         }
@@ -26,8 +24,6 @@ export class MouseManager {
       (event) => {
         if (event.button === 0) {
           this.leftMouseDown = false;
-
-          (top as any).console.log("Left mouse button up");
         } else if (event.button === 2) {
           this.rightMouseDown = false;
         }

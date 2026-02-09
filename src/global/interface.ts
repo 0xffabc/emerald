@@ -15,6 +15,7 @@ import { Shotgun } from "../world/weapons/shotgun";
 import { Shuriken } from "../world/weapons/shuriken";
 import { Sword } from "../world/weapons/sword";
 import { World } from "../world/world";
+import { Timer } from "./lib/timer";
 
 class HackInterface {
   static Debug = class {
@@ -38,83 +39,47 @@ class HackInterface {
   };
 
   static Exploits = class {
-    private static infWeaponInterval: number = 0;
-    private static rapidFireInterval: number = 0;
-    private static invisibleHitInterval: number = 0;
+    public static InfiniteWeapon = new Timer()
+      .withTimeout(1000)
+      .withCallback(() => {
+        if (!World.myPlayer?.weapon) {
+          this.InfiniteWeapon.stop();
 
-    static infiniteWeapon() {
-      if (this.infWeaponInterval > 0) {
-        clearInterval(this.infWeaponInterval);
-
-        this.infWeaponInterval = 0;
-
-        return;
-      }
-
-      if (!World.myPlayer?.weapon) {
-        return Intermediate.notification("No weapon equipped");
-      }
-
-      const interval = setInterval(() => {
-        World.myPlayer?.applyInfiniteWeaponExploit(World.myPlayer.weapon!!);
-      }, 4000);
-
-      this.infWeaponInterval = interval;
-
-      return Intermediate.notification("Infinite weapon exploit activated");
-    }
-
-    static rapidFireExploit() {
-      if (this.rapidFireInterval > 0) {
-        clearInterval(this.rapidFireInterval);
-
-        this.rapidFireInterval = 0;
-
-        return;
-      }
-
-      if (!World.myPlayer?.weapon) {
-        return Intermediate.notification("No weapon equipped");
-      }
-
-      const interval = setInterval(() => {
-        if (World.MouseManager.isLeftDown()) {
-          World.myPlayer?.applyRapidFireExploit(World.myPlayer.weapon!!);
-          SocketController.simulateServerPacket(
-            Array.from(
-              World.myPlayer?.weapon?.toFireEvent(World.myPlayer.id)!!,
-            ),
-          );
+          return Intermediate.notification("No weapon equipped");
         }
-      }, 400);
 
-      this.rapidFireInterval = interval;
+        World.myPlayer.applyInfiniteWeaponExploit(World.myPlayer.weapon!!);
+      })
+      .build();
 
-      return Intermediate.notification("Rapid fire exploit activated");
-    }
+    public static RapidFire = new Timer()
+      .withTimeout(200)
+      .withCallback(() => {
+        if (!World.myPlayer?.weapon) {
+          this.RapidFire.stop();
 
-    static invisibleHitExploit() {
-      if (this.invisibleHitInterval > 0) {
-        clearInterval(this.invisibleHitInterval);
-
-        this.invisibleHitInterval = 0;
-
-        return;
-      }
-
-      if (!World.myPlayer?.weapon) {
-        return Intermediate.notification("No weapon equipped");
-      }
-
-      const interval = setInterval(() => {
-        if (World.MouseManager.isLeftDown()) {
-          World.myPlayer?.applyInvisibleHitExploit(World.myPlayer.weapon!!);
+          return Intermediate.notification("No weapon equipped");
         }
-      }, 700);
 
-      this.invisibleHitInterval = interval;
+        World.myPlayer.applyRapidFireExploit(World.myPlayer.weapon!!);
+      })
+      .build();
 
-      return Intermediate.notification("Invisible hit exploit activated");
+    public static InvisibleHit = new Timer()
+      .withTimeout(1000)
+      .withCallback(() => {
+        if (!World.myPlayer?.weapon) {
+          this.InvisibleHit.stop();
+
+          return Intermediate.notification("No weapon equipped");
+        }
+
+        World.myPlayer.applyInvisibleHitExploit(World.myPlayer.weapon!!);
+      })
+      .build();
+
+    public static Immortality() {
+      World.myPlayer?.applyImmortalityExploit();
     }
   };
 

@@ -51,16 +51,21 @@ client_menu.innerHTML = `
               <td> <span onclick = "window.HackInterface.Weapons.Pistol()"> Pistol </span> </td>
             </tr>
           </table> <br>
-        <span onclick = "window.HackInterface.Exploits.rapidFireExploit()"> Rapid Fire ╞ </span>
-          <span onclick = "window.HackInterface.Exploits.invisibleHitExploit()"> Invisible hit ╞ </span>
-        <span onclick = "window.HackInterface.Exploits.infiniteWeapon()"> Infinity ╞</span>
+        <span onclick = "window.HackInterface.Exploits.RapidFire.flip(); window.HackInterface.Exploits.RapidFire.updateStatusTo('rapidFireStatus')"> Rapid Fire: <span id = "rapidFireStatus"> Paused </span> </span> <br>
+        <span onclick = "window.HackInterface.Exploits.InfiniteWeapon.flip(); window.HackInterface.Exploits.InfiniteWeapon.updateStatusTo('infiniteFireStatus')"> Infinity: <span id = "infiniteFireStatus"> Paused </span> </span> <br>
+
+        <input type = "range" min = "0" max = "500" value = "150" id = "rangeInput" oninput="window.HackInterface.Exploits.RapidFire.updateRate(this.value, 'rapidFireRate')"> <span> Rapid fire rate/ms: <span id="rapidFireRate">150</span> </span> <br>
+        <input type = "range" min = "0" max = "4000" value = "1000" id = "rangeInput2" oninput="window.HackInterface.Exploits.InfiniteWeapon.updateRate(this.value, 'infiniteFireRate')"> <span> Infinite fire rate/ms: <span id="infiniteFireRate">1000</span> </span>
+
         </column>
         <column style="display: none">
-        <span onclick = "top.packets.immortality()"> Buble</span>
+        <h3> Destruction </h3>
+        <span onclick = "window.HackInterface.Exploits.Immortality()"> Buble</span>
        <span onclick = "top.packets.impulse_tool()"> Combat Module</span><br>
        <span onclick = "top.packets.kick_all()"> Crash </span>
        <span onclick = "top.packets.antirfire()"> AntiWeapon </span>
        <span onclick = "top.packets.setHp()"> Random HP </span> <br>
+       <h3> Communism </h3>
        <select id = "select" style = "border: 2px solid rgb(0, 180, 0); border-top: 4px solid rgb(0, 180, 0); color: #fff; outline: 0; background: #111111">
            <option value = "none"> Disspell </option>
            <option value = "cube_gun"> CubeGun </option>
