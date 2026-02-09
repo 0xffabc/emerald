@@ -140,6 +140,7 @@ class HackInterface {
 
     public static RandomHP = new Timer()
       .withTimeout(100)
+      .withName("RandomHP")
       .withCallback(() => {
         World.PlayerManager.players.forEach((player) => {
           player.setHealth(Math.random() * 100);
@@ -149,6 +150,7 @@ class HackInterface {
 
     public static InfiniteWeapon = new Timer()
       .withTimeout(1000)
+      .withName("InfiniteWeapon")
       .withCallback(() => {
         if (!World.myPlayer?.weapon) {
           this.InfiniteWeapon.stop();
@@ -162,6 +164,7 @@ class HackInterface {
 
     public static RapidFire = new Timer()
       .withTimeout(200)
+      .withName("RapidFire")
       .withCallback(() => {
         if (!World.myPlayer?.weapon) {
           this.RapidFire.stop();
@@ -175,6 +178,7 @@ class HackInterface {
 
     public static InvisibleHit = new Timer()
       .withTimeout(1000)
+      .withName("InvisibleHit")
       .withCallback(() => {
         if (!World.myPlayer?.weapon) {
           this.InvisibleHit.stop();
@@ -263,27 +267,56 @@ class HackInterface {
       } else {
         this.activeKeybinds.set(key, "true");
 
-        this.keybindManagerElement.innerHTML += `<p style = "
-          margin-bottom: 2px;
-          font-size: 8px;
-          height: auto;
-          border-top: 1px solid;
-          border-color: rgb(0, 180, 0);
-          background-color: rgba(0, 0, 0, 0.5);
-          transition: all 0.3s ease;
-          opacity: 0;
-          transform: translateX(200px);"
-          id = "${key}">${key}: ${keyData.split(".").slice(1, 4).join("/")}</p>`;
-
-        const element = document.getElementById(key)!;
-
-        setTimeout(() => {
-          element.style.opacity = "1";
-          element.style.transform = "translateX(0)";
-        }, 20);
+        this.addBottomText(
+          key,
+          `${key}: ${keyData.split(".").slice(1, 4).join("/")}`,
+          /Weapon|Permanent/gim.test(keyData),
+        );
       }
 
       eval("window." + keyData);
+    }
+
+    public static addBottomText(
+      id: string,
+      text: string,
+      isTemp: boolean = false,
+    ) {
+      this.keybindManagerElement.innerHTML += `<p style = "
+        margin-bottom: 2px;
+        font-size: 8px;
+        height: auto;
+        border-top: 1px solid;
+        border-color: rgb(0, 180, 0);
+        background-color: rgba(0, 0, 0, 0.5);
+        transition: all 0.3s ease;
+        opacity: 0;
+        transform: translateX(200px);"
+        id = "${id}">${text}</p>`;
+
+      const element = document.getElementById(id)!;
+
+      setTimeout(() => {
+        element.style.opacity = "1";
+        element.style.transform = "translateX(0)";
+
+        if (isTemp) {
+          setTimeout(() => this.removeBottomText(id), 1200);
+        }
+      }, 20);
+    }
+
+    public static removeBottomText(id: string) {
+      const element = document.getElementById(id);
+
+      if (element) {
+        element.style.opacity = "0";
+        element.style.transform = "translateX(200px)";
+
+        setTimeout(() => {
+          element.remove();
+        }, 700);
+      }
     }
   };
 

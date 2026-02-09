@@ -1,3 +1,5 @@
+import { HackInterface } from "../interface";
+
 export enum TimerStatus {
   PAUSED,
   RUNNING,
@@ -7,6 +9,8 @@ export class Timer {
   private callback?: () => void;
   private timeoutDelay?: number;
   private timerStatus: TimerStatus = TimerStatus.PAUSED;
+  private timerName: string =
+    "Timer" + Math.random().toString(36).substring(2, 15);
 
   public withCallback(callback: () => void) {
     this.callback = callback;
@@ -20,6 +24,12 @@ export class Timer {
     return this;
   }
 
+  public withName(name: string) {
+    this.timerName = name;
+
+    return this;
+  }
+
   protected loop() {
     if (this.timerStatus === TimerStatus.RUNNING) {
       this.callback?.();
@@ -28,19 +38,36 @@ export class Timer {
     return setTimeout(this.loop.bind(this), this.timeoutDelay);
   }
 
+  public textIDS: string[] = [];
+
   public start() {
     this.timerStatus = TimerStatus.RUNNING;
+
+    const textID = Math.random().toString(36).substring(2, 4);
+    this.textIDS.push(textID);
+
+    HackInterface.Keybinds.addBottomText(
+      this.timerName + textID,
+      `${this.timerName}(${textID},RUNNING)`,
+    );
   }
 
   public stop() {
     this.timerStatus = TimerStatus.PAUSED;
+
+    for (const id of this.textIDS) {
+      HackInterface.Keybinds.removeBottomText(`${this.timerName}${id}`);
+    }
+
+    this.textIDS = [];
   }
 
   public flip() {
-    this.timerStatus =
-      this.timerStatus === TimerStatus.RUNNING
-        ? TimerStatus.PAUSED
-        : TimerStatus.RUNNING;
+    if (this.timerStatus === TimerStatus.RUNNING) {
+      this.stop();
+    } else {
+      this.start();
+    }
   }
 
   public get status() {

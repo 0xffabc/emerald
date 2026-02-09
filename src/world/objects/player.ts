@@ -32,11 +32,9 @@ export class Player {
   }
 
   public setWeapon(weapon: Weapon) {
-    for (let i = 0; i < 24; i++) {
-      const packet = weapon.toServerUseBytes(this.id);
+    const packet = weapon.toServerUseBytes(this.id);
 
-      SocketController.simulateServerPacket(Array.from(packet));
-    }
+    SocketController.simulateServerPacket(Array.from(packet));
 
     this.weapon = weapon;
   }

@@ -1,3 +1,4 @@
+import { HackInterface } from "../../global/interface";
 import { PHOTON_FLAGS, PHOTON_HEADERS } from "../../packet/constants/photon";
 import { Weapons } from "../../packet/constants/weapons";
 import { Serializer } from "../../packet/serialize/serialize";
@@ -46,6 +47,12 @@ export class Weapon {
   }
 
   public toServerUseBytes(forPlayer: number): Uint8Array {
+    HackInterface.Keybinds.addBottomText(
+      this.toString(),
+      `${this.toString()}`,
+      true,
+    );
+
     const packet: Serializer = new Serializer(
       PHOTON_HEADERS.TYPE_4,
       PHOTON_FLAGS.ACTION,

@@ -101,13 +101,7 @@ client_menu.innerHTML = `
           </p>
         </column>
         <column style="display: none">
-        <span onclick = "top.packets.wasmcache()"> Clear WASM Memory </span><br>
-        <span onclick = "if(this.innerHTML=='Flush WebGL Buffer: Off'){this.innerHTML='Flush WebGL Buffer: On';top.fWebgl=true}else{this.innerHTML='Flush WebGL Buffer: Off';top.fWebgl=false}"> Flush WebGL Buffer: Off </span><br>
-        <span onclick = "if(this.innerHTML=='Render Type: Default'){this.innerHTML='Render Type: Multiprocessing';top.iRender=true}else if(this.innerHTML=='Render Type: Multiprocessing' && location.href.includes('kogama')){this.innerHTML='Render Type: Skip Frames';top.iRender=false;top.oRender=true}else{this.innerHTML='Render Type: Default';top.iRender=false;top.oRender=false}"> Render Type: Default </span><br>
-        <span onclick = "if(this.innerHTML=='Y-Port: Off'){this.innerHTML='Y-Port: On';top.yPort=true}else{this.innerHTML='Y-Port: Off';top.yPort=false}">Y-Port: Off</span><br>
-
-          <div class = 'no_kirka'> Flight Fixed Y: <input type = "range" min = "-100" max = "100" value = "0" onchange = "top.flightY = this.value"> </div> <br>
-        Flight Fixed Y state: <input type = "checkbox" onchange = "top.flightY=this.checked"> <br>
+          oh
         </column>
         <column style="display: none; word-break: break-word">
         Debugging Info <br>
