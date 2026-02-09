@@ -55,7 +55,7 @@ class HackInterface {
       } else if (target == "me") {
         callback(World.myPlayer!);
       } else {
-        const player = World.PlayerManager.getPlayerById(+target);
+        const player = World.PlayerManager.getPlayerByName(target);
 
         if (player) {
           callback(player);

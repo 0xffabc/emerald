@@ -9,6 +9,7 @@ import type { Weapon } from "./weapon";
 
 export class Player {
   public id: number;
+  public name: string;
   public x: number;
   public y: number;
   public z: number;
@@ -16,12 +17,14 @@ export class Player {
 
   public constructor(
     id: number,
+    name: string,
     x: number,
     y: number,
     z: number,
     weapon?: Weapon,
   ) {
     this.id = id;
+    this.name = name;
     this.x = x;
     this.y = y;
     this.z = z;

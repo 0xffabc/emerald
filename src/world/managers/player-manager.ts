@@ -18,4 +18,8 @@ export class PlayerManager {
   public static getPlayerById(id: number): Player | undefined {
     return this.players.find((player) => player.id === id);
   }
+
+  public static getPlayerByName(name: string): Player | undefined {
+    return this.players.find((player) => player.name === name);
+  }
 }

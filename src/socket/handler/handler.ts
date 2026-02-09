@@ -50,50 +50,54 @@ export default class SocketHandler extends SocketHook {
         "Received raw player format with corresponding IDs: " + players,
       );
 
-      const sidMatches = players.match(
-        /"DefaultPlayModeSpawnRole":(\d{6})/gim,
-      )!!;
+      const playerList = players.matchAll(
+        /"UserName":"([^"]+)".*?"activeSpawnRole":(\d+)/gim,
+      )!;
 
-      const myPlayerSid = sidMatches[0].split(":")[1];
+      for (const match of playerList) {
+        const [_, username, id] = match;
 
-      Intermediate.notification(`Set MyPlayer.SID=${myPlayerSid}`);
+        if (!username || isNaN(+id)) continue;
 
-      const gamePlayers = [
-        ...new Set(players.match(/(\d+)/gm)!!.filter((e) => e.length == 6)),
-      ];
-
-      HackInterface.Logging.log(
-        `Received player list: ${gamePlayers}, MyPlayer sid matches: ${sidMatches.join(", ")}`,
-      );
-
-      gamePlayers.forEach((id) => {
-        const player = new Player(+id, 0, 0, 0);
+        const player = new Player(+id, username, 0, 0, 0);
 
         World.PlayerManager.addPlayer(player);
 
         try {
           const e = document.createElement("option");
 
-          e.innerHTML = "" + player.id;
-          e.value = "" + player.id;
+          e.innerHTML = "" + player.name;
+          e.value = "" + player.name;
 
           document.querySelector("#select1")!!.append(e);
         } catch (error) {
           Intermediate.notification(`Error creating option element: ${error}`);
         }
-      });
+      }
+
+      HackInterface.Logging.log(
+        `Received player list: ${playerList.toString()}`,
+      );
 
       document.querySelector("#players")!!.innerHTML = decodedText;
 
-      World.myPlayer = World.PlayerManager.players.find(
-        (player) => "" + player.id == myPlayerSid,
-      )!!;
+      if (!World.myPlayer) {
+        const sidMatches = players.match(
+          /"DefaultPlayModeSpawnRole":(\d{6})/gim,
+        )!!;
 
-      Intermediate.notification(`Set MyPlayer.PID=${World.myPlayer.id}`);
+        const myPlayerSid = sidMatches[0].split(":")[1];
 
-      HackInterface.Logging.log(`MyPlayer.PID is ${World.myPlayer.id}`);
+        World.myPlayer = World.PlayerManager.players.find(
+          (player) => "" + player.id == myPlayerSid,
+        )!!;
 
-      this.dispatchEvent(new Event("world-ready"));
+        Intermediate.notification(`Set MyPlayer.PID=${World.myPlayer.id}`);
+
+        HackInterface.Logging.log(`MyPlayer.PID is ${World.myPlayer.id}`);
+
+        this.dispatchEvent(new Event("world-ready"));
+      }
     } else if (packet[2] == 2) {
       return { result: "delay", delay: HackInterface.Exploits.BackTrack.Delay };
     }
