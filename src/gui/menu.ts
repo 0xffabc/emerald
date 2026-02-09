@@ -1,11 +1,13 @@
+import { HackInterface } from "../global/interface";
+
 const client_menu = document.createElement("div");
 
 client_menu.style = [
   "position: fixed",
   "color: #fff",
   "z-index: 100",
-  "top: 100px",
-  "left: 500px",
+  "top: 50px",
+  "left: 900px",
   "font-weight: slim",
   "font-family: 'Roboto'",
   "scrollbar-color: #fff #fff",
@@ -15,18 +17,19 @@ client_menu.style = [
 client_menu.innerHTML = `
     <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
 
-    <div style="width: 440px; height: 300px; border-top: 3px solid; background: rgba(0, 0, 0, 0.45); backdrop-filter: blur(5px); border-top: 5px solid rgb(0, 180, 0); color: #fff; position: absolute; top: 25%; right: 25%; font-family: Arial; font-size: 20px">
+    <div style="width: 540px; height: 400px; border-top: 3px solid; background: rgba(0, 0, 0, 0.45); backdrop-filter: blur(5px); border-top: 5px solid rgb(0, 180, 0); color: #fff; position: absolute; top: 25%; right: 25%; font-family: Arial; font-size: 20px">
     <span style="position: absolute; top: 10px; left: 30px; color: #fff">Emerald</span>
     <span style="position: absolute; top: 15px; right: 25px; font-size: 15px" onclick="this.parentElement.parentElement.style.visibility='hidden'">x</span>
-    <div style="font-size: 18px; position: absolute; top: 45px; left: 28px">
+    <div style="font-size: 15px; position: absolute; top: 45px; left: 28px">
       <span class = "kogama__" onclick="[...document.querySelectorAll('column')].forEach(e => e.style.display='none'); [...document.querySelectorAll('column')][0].style.display='block'">Weapons</span>
       <span class = "kogama__" onclick="[...document.querySelectorAll('column')].forEach(e => e.style.display='none'); [...document.querySelectorAll('column')][1].style.display='block'">Players</span>
       <span onclick="[...document.querySelectorAll('column')].forEach(e => e.style.display='none'); [...document.querySelectorAll('column')][2].style.display='block'">Game</span>
       <span onclick="[...document.querySelectorAll('column')].forEach(e => e.style.display='none'); [...document.querySelectorAll('column')][3].style.display='block'">Info</span>
       <span onclick="[...document.querySelectorAll('column')].forEach(e => e.style.display='none'); [...document.querySelectorAll('column')][4].style.display='block'">Logging</span>
       <span onclick="[...document.querySelectorAll('column')].forEach(e => e.style.display='none'); [...document.querySelectorAll('column')][5].style.display='block'">Cubes</span>
+      <span onclick="[...document.querySelectorAll('column')].forEach(e => e.style.display='none'); [...document.querySelectorAll('column')][6].style.display='block'">Keybinds</span>
     </div>
-    <div style="width: 80%; height: 60%; position: absolute; top: 25%; left: 9%; border: 3px solid; border-color: rgba(0, 0, 0, 0.5); overflow-y: scroll; scrollbar-width: none">
+    <div style="width: 80%; height: 70%; position: absolute; top: 17%; left: 9%; border: 3px solid; border-color: rgba(0, 0, 0, 0.5); overflow-y: scroll; scrollbar-width: none">
       <inner style="position: absolute; top: 5px; left: 5px; font-size: 15px">
         <column>
           <table style = "color: white">
@@ -59,7 +62,7 @@ client_menu.innerHTML = `
 
         </column>
         <column style="display: none">
-        <h4> Destruction </h4>
+        <p style="font-weight: bold;"> Destruction </p>
         <span onclick = "window.HackInterface.Exploits.Immortality()"> Immortality: Physical</span> <br>
 
        <span onclick = "top.packets.impulse_tool()"> Combat Module</span><br>
@@ -69,7 +72,7 @@ client_menu.innerHTML = `
        <span onclick = "window.HackInterface.Exploits.RandomHP.flip(); window.HackInterface.Exploits.RandomHP.updateStatusTo('randomHPStatus')"> Random HP: <span id = "randomHPStatus"> Paused </span> </span> <br>
        <input type = "range" min = "0" max = "4000" value = "1000" oninput="window.HackInterface.Exploits.InfiniteWeapon.updateRate(this.value, 'randomHPRate')"> <span> Infinite fire rate/ms: <span id="randomHPRate">1000</span> </span>
 
-       <h4> Communism </h4>
+       <p style="font-weight: bold;"> Communism </p>
        <select id = "select" style = "border: 2px solid rgb(0, 180, 0); border-top: 4px solid rgb(0, 180, 0); color: #fff; outline: 0; background: #111111">
            <option value = "none"> Disspell </option>
            <option value = "cube_gun"> CubeGun </option>
@@ -90,7 +93,7 @@ client_menu.innerHTML = `
            <option value = "cube"> Spawn Yourself </option>
            <option value = "hpglitch"> Instant HP </option>
        </select> <span onclick = "window.HackInterface.Communism.marxism(document.querySelector('#select').value)"> Execute </span><br>
-        Aggressive Crash: <select id = "select1" style = "border: 2px solid rgb(0, 180, 0); border-top: 4px solid rgb(0, 180, 0); color: #fff; outline: 0; background: #111111"></select> <span onclick = "top.packets.crash(document.querySelector('#select1').value)"> Crash! </span><br>
+        Target player[s]?: <select id = "select1" style = "border: 2px solid rgb(0, 180, 0); border-top: 4px solid rgb(0, 180, 0); color: #fff; outline: 0; background: #111111"><option value = "me"> Self </option> <option value = "allme"> All, except self </option> <option value = "all"> All </option> </select>
         </column>
         <column style="display: none">
         <span onclick = "top.packets.wasmcache()"> Clear WASM Memory </span><br>
@@ -103,10 +106,9 @@ client_menu.innerHTML = `
         </column>
         <column style="display: none; word-break: break-word">
         Debugging Info <br>
-        Player coords: <span id = "playerCoords">(0; 0)</span> <br>
+        Last updated player coords: <span id = "playerCoords">(0; 0)</span> <br>
         AntiKick called: <span id = "antikick"> 0 </span> <br>
         Players data: <span id = "players"> </span>
-        By @0xffabc on YT and discord
         </column>
         <column id = "logging" style = "display: none; overflow-y: scroll; max-width: 100%; max-height: 100%; width: 100%; height: 100%; scrollbar-width: none; word-break: break-all">
 
@@ -114,6 +116,31 @@ client_menu.innerHTML = `
         <column style = "display: none; overflow: scroll; max-width: 100%; max-height: 100%; width: 100%; height: 100%; scrollbar-width: none">
         <span style = "font-size: 18px"> Cube-Gun tools </span> <br>
         Cube-Gun material code: <input type = "number" onchange = "top.packets.changeCubeId(this.value); top.packets.cube_gun(playerSid, top.packets.cubeID)" style = "border: 2px solid rgb(0, 180, 0); border-top: 4px solid rgb(0, 180, 0); color: #fff; outline: 0; background: #111111">
+        </column>
+        <column style="display: none">
+          <button onclick = "window.HackInterface.Keybinds.remove(document.getElementById('keybindTarget').value)"> - </button> <button onclick = "window.HackInterface.Keybinds.add(document.getElementById('keybindTarget').value, document.getElementById('lastKeyPressed').innerText)"> + </button> <span id = "lastKeyPressed"> </span>
+          For: <select id = "keybindTarget" style = "border: 2px solid rgb(0, 180, 0); border-top: 4px solid rgb(0, 180, 0); color: #fff; outline: 0; background: #111111">
+            <option value = "HackInterface.Exploits.RapidFire()"> Rapid fire </option>
+            <option value = "HackInterface.Exploits.InfiniteWeapon()"> Infinite fire </option>
+            <option value = "HackInterface.Exploits.InvisibleHit()"> Invisible hit </option>
+            <option value = "HackInterface.Communism.marxism('immortality')"> Immortality (Permanent) </option>
+            <option value = "HackInterface.Communism.marxism('Enlarge')"> Enlarge (Permanent) </option>
+            <option value = "HackInterface.Communism.marxism('hpGlitch')"> HP Glitch (Until death) </option>
+            <option value = "HackInterface.Weapons.CubeGun()"> CubeGun </option>
+            <option value = "HackInterface.Weapons.ImpulseGun()"> Impulse Gun </option>
+            <option value = "HackInterface.Weapons.Bazooka()"> Bazooka </option>
+            <option value = "HackInterface.Weapons.FlameThrower()"> Flametower </option>
+            <option value = "HackInterface.Weapons.HealGun()"> Healer Gun </option>
+            <option value = "HackInterface.Weapons.DoublePistol()"> Pistols </option>
+            <option value = "HackInterface.Weapons.CentralGun()"> Central </option>
+            <option value = "HackInterface.Weapons.Shuriken()"> Shuriken </option>
+            <option value = "HackInterface.Weapons.Shotgun()"> Shotgun </option>
+            <option value = "HackInterface.Weapons.RailGun()"> Rail Gun </option>
+            <option value = "HackInterface.Weapons.Sword()"> Sword </option>
+            <option value = "HackInterface.Weapons.GrowthGun()"> Slapgun Spawner </option>
+            <option value = "HackInterface.Weapons.Pistol()"> Pistol (1x) </option>
+          </select>
+          <ul id="keybindsList"></ul>
         </column>
       </inner>
     </div>
@@ -155,6 +182,33 @@ window.addEventListener("keyup", (e) => {
       client_menu.style.visibility = "hidden";
     }
   }
+
+  document.getElementById("lastKeyPressed")!.textContent = `${e.key}`;
+
+  HackInterface.Keybinds.checkKeybindAndExecute(e.key);
 });
 
 document.documentElement.append(client_menu);
+
+HackInterface.Keybinds.updateKeybindsList();
+
+const keybinds_menu = document.createElement("div");
+
+keybinds_menu.style = `
+  width: 150px;
+  height: 150px;
+  position: absolute;
+  bottom: 0%;
+  right: 0%;
+  overflow-y: scroll;
+  scrollbar-width: none;
+  z-index: 100;
+  color: white;
+  text-align: center;
+  display: flex;
+  flex-direction: column-reverse;
+`;
+
+document.documentElement.append(keybinds_menu);
+
+HackInterface.Keybinds.keybindManagerElement = keybinds_menu;

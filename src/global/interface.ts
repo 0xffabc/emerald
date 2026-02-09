@@ -39,11 +39,32 @@ class HackInterface {
     };
 
     static globalExecute(callback: (_: Player) => void) {
-      World.PlayerManager.players.forEach((player) => {
-        if (player.id == World.myPlayer?.id) return;
+      const target = (document.querySelector("#select1")! as HTMLSelectElement)
+        .value;
 
-        callback(player);
-      });
+      if (target == "all") {
+        World.PlayerManager.players.forEach((player) => {
+          callback(player);
+        });
+      } else if (target == "allme") {
+        World.PlayerManager.players.forEach((player) => {
+          if (player.id == World.myPlayer?.id) return;
+
+          callback(player);
+        });
+      } else if (target == "me") {
+        callback(World.myPlayer!);
+      } else {
+        const player = World.PlayerManager.getPlayerById(+target);
+
+        if (player) {
+          callback(player);
+        } else {
+          Intermediate.notification(
+            "Player not found! I was looking for " + target,
+          );
+        }
+      }
     }
 
     static marxism(action: string) {
@@ -163,6 +184,102 @@ class HackInterface {
 
     public static Immortality() {
       World.myPlayer?.applyImmortalityExploit();
+    }
+  };
+
+  static Keybinds = class {
+    private static activeKeybinds: Map<string, string> = new Map();
+
+    public static keybindManagerElement: HTMLDivElement;
+
+    private static pullKeybindManagerData() {
+      return JSON.parse(localStorage.getItem("keybinds") || "{}");
+    }
+
+    public static remove(key: string) {
+      const data = this.pullKeybindManagerData();
+
+      delete data[key];
+
+      localStorage.setItem("keybinds", JSON.stringify(data));
+
+      this.updateKeybindsList();
+    }
+
+    public static add(key: string, value: string) {
+      const data = this.pullKeybindManagerData();
+
+      data[key] = value;
+
+      localStorage.setItem("keybinds", JSON.stringify(data));
+
+      this.updateKeybindsList();
+    }
+
+    public static updateKeybindsList() {
+      const data = this.pullKeybindManagerData();
+
+      const keybindsList = document.getElementById("keybindsList");
+
+      if (!keybindsList) return;
+
+      keybindsList.innerHTML = "";
+
+      for (const [key, value] of Object.entries(data)) {
+        const li = document.createElement("li");
+
+        li.textContent = `${key}: ${value}`;
+
+        keybindsList.appendChild(li);
+      }
+    }
+
+    public static checkKeybindAndExecute(key: string) {
+      const keyToggleInfo = this.activeKeybinds.has(key);
+
+      const data = this.pullKeybindManagerData();
+
+      const keyData = Object.keys(data).find((k) => data[k] === key);
+
+      if (!keyData) return;
+
+      if (keyToggleInfo) {
+        this.activeKeybinds.delete(key);
+
+        const element = document.getElementById(key);
+
+        if (element) {
+          element.style.opacity = "0";
+          element.style.transform = "translateX(200px)";
+
+          setTimeout(() => {
+            element.remove();
+          }, 700);
+        }
+      } else {
+        this.activeKeybinds.set(key, "true");
+
+        this.keybindManagerElement.innerHTML += `<p style = "
+          margin-bottom: 2px;
+          font-size: 8px;
+          height: auto;
+          border-top: 1px solid;
+          border-color: rgb(0, 180, 0);
+          background-color: rgba(0, 0, 0, 0.5);
+          transition: all 0.3s ease;
+          opacity: 0;
+          transform: translateX(200px);"
+          id = "${key}">${key}: ${keyData.split(".").slice(1, 4).join("/")}</p>`;
+
+        const element = document.getElementById(key)!;
+
+        setTimeout(() => {
+          element.style.opacity = "1";
+          element.style.transform = "translateX(0)";
+        }, 20);
+      }
+
+      eval("window." + keyData);
     }
   };
 
