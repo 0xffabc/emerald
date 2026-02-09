@@ -1,0 +1,25 @@
+{
+  "Weapon": {
+    "Cube-Gun": "window.HackInterface.Weapons.CubeGun()",
+    "Impulse Gun": "window.HackInterface.Weapons.ImpulseGun()",
+    "Bazooka": "window.HackInterface.Weapons.Bazooka()",
+    "Double Revoliers": "window.HackInterface.Weapons.DoublePistol()",
+    "Heal Gun": "window.HackInterface.Weapons.HealGun()",
+    "Colt 45": "window.HackInterface.Weapons.CentralGun()",
+    "Shotgun": "window.HackInterface.Weapons.Shotgun()",
+    "Shuriken": "window.HackInterface.Weapons.Shuriken()",
+    "Rail": "window.HackInterface.Weapons.RailGun()",
+    "Sword": "window.HackInterface.Weapons.Sword()",
+    "Slapgun Spawner": "window.HackInterface.Weapons.GrowthGun()",
+    "Pistol": "window.HackInterface.Weapons.Pistol()"
+  },
+  "Weapon Exploits": {
+    "Rapid Fire": "window.HackInterface.Exploits.RapidFire.flip(); window.HackInterface.Exploits.RapidFire.updateStatusTo('rapidFireStatus')",
+    "Infinite Fire": "window.HackInterface.Exploits.InfiniteWeapon.flip(); window.HackInterface.Exploits.InfiniteWeapon.updateStatusTo('infiniteFireStatus')"
+  },
+  "Player Exploits": {
+    "Immortality": "window.HackInterface.Exploits.Immortality()",
+    "Random HP": "window.HackInterface.Exploits.RandomHP.flip(); window.HackInterface.Exploits.RandomHP.updateStatusTo('randomHPStatus')",
+    "Deploy Communism": "window.HackInterface.Communism.marxism(document.querySelector('#select').value)"
+  }
+}

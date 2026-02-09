@@ -251,6 +251,14 @@ class HackInterface {
 
       if (!keyData) return;
 
+      const trash = document.getElementById(key);
+
+      if (trash) {
+        this.removeBottomText(key);
+
+        return;
+      }
+
       if (keyToggleInfo) {
         this.activeKeybinds.delete(key);
 

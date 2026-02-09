@@ -33,33 +33,36 @@ export class Timer {
   protected loop() {
     if (this.timerStatus === TimerStatus.RUNNING) {
       this.callback?.();
-    }
 
-    return setTimeout(this.loop.bind(this), this.timeoutDelay);
+      return setTimeout(this.loop.bind(this), this.timeoutDelay);
+    }
   }
 
-  public textIDS: string[] = [];
-
   public start() {
+    if (this.timerStatus === TimerStatus.RUNNING) return;
+
+    HackInterface.Keybinds.removeBottomText(this.timerName);
+
     this.timerStatus = TimerStatus.RUNNING;
 
-    const textID = Math.random().toString(36).substring(2, 4);
-    this.textIDS.push(textID);
+    let node: HTMLElement | null = null;
+
+    while ((node = document.querySelector(`#${this.timerName}`))) {
+      node.remove();
+    }
 
     HackInterface.Keybinds.addBottomText(
-      this.timerName + textID,
-      `${this.timerName}(${textID},RUNNING)`,
+      this.timerName,
+      `${this.timerName}(RUNNING)`,
     );
+
+    setTimeout(() => this.loop(), this.timeoutDelay);
   }
 
   public stop() {
     this.timerStatus = TimerStatus.PAUSED;
 
-    for (const id of this.textIDS) {
-      HackInterface.Keybinds.removeBottomText(`${this.timerName}${id}`);
-    }
-
-    this.textIDS = [];
+    HackInterface.Keybinds.removeBottomText(this.timerName);
   }
 
   public flip() {
