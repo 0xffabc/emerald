@@ -17,7 +17,7 @@ client_menu.innerHTML = `
 
     <div style="width: 440px; height: 300px; border-top: 3px solid; background: rgba(0, 0, 0, 0.45); backdrop-filter: blur(5px); border-top: 5px solid rgb(0, 180, 0); color: #fff; position: absolute; top: 25%; right: 25%; font-family: Arial; font-size: 20px">
     <span style="position: absolute; top: 10px; left: 30px; color: #fff">Emerald</span>
-    <span style="position: absolute; top: 15px; right: 25px; font-size: 15px" onclick="this.parentElement.style.visibility='hidden'">x</span>
+    <span style="position: absolute; top: 15px; right: 25px; font-size: 15px" onclick="this.parentElement.parentElement.style.visibility='hidden'">x</span>
     <div style="font-size: 18px; position: absolute; top: 45px; left: 28px">
       <span class = "kogama__" onclick="[...document.querySelectorAll('column')].forEach(e => e.style.display='none'); [...document.querySelectorAll('column')][0].style.display='block'">Weapons</span>
       <span class = "kogama__" onclick="[...document.querySelectorAll('column')].forEach(e => e.style.display='none'); [...document.querySelectorAll('column')][1].style.display='block'">Players</span>
@@ -143,6 +143,18 @@ client_menu.addEventListener("dragstart", (e) => {
 client_menu.addEventListener("dragend", (e) => {
   client_menu.style.top = e.clientY + offsetY + "px";
   client_menu.style.left = e.clientX + _offsetX + "px";
+});
+
+window.addEventListener("keyup", (e) => {
+  if (e.key === "Insert") {
+    if (client_menu.style.visibility === "visible") {
+      client_menu.style.visibility = "hidden";
+    } else if (client_menu.style.visibility === "hidden") {
+      client_menu.style.visibility = "visible";
+    } else {
+      client_menu.style.visibility = "hidden";
+    }
+  }
 });
 
 document.documentElement.append(client_menu);
