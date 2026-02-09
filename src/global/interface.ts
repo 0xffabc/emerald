@@ -7,6 +7,7 @@ import type { Player } from "../world/objects/player";
 import { Weapon } from "../world/objects/weapon";
 import { Bazooka } from "../world/weapons/bazooka";
 import { CentralGun } from "../world/weapons/central-gun";
+import { CubeGun } from "../world/weapons/cube-gun";
 import { DoublePistol } from "../world/weapons/double-pistol";
 import { FlameThrower } from "../world/weapons/flame-thrower";
 import { GrowthGun } from "../world/weapons/growth-gun";
@@ -24,6 +25,7 @@ class HackInterface {
   static Communism = class {
     private static Weapons: any = {
       none: Weapon,
+      cube_gun: CubeGun,
       bazooka: Bazooka,
       central: CentralGun,
       pistols: DoublePistol,
@@ -329,6 +331,16 @@ class HackInterface {
   };
 
   static Weapons = class {
+    static CubeGunMaterial = 1;
+
+    static CubeGun(material: number = -1) {
+      if (material === -1) {
+        material = this.CubeGunMaterial;
+      }
+
+      World.myPlayer?.setWeapon(new CubeGun(material));
+    }
+
     static Bazooka() {
       World.myPlayer?.setWeapon(new Bazooka());
     }

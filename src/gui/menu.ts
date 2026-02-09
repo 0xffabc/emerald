@@ -117,7 +117,7 @@ client_menu.innerHTML = `
         </column>
         <column style = "display: none; overflow: scroll; max-width: 100%; max-height: 100%; width: 100%; height: 100%; scrollbar-width: none">
         <span style = "font-size: 18px"> Cube-Gun tools </span> <br>
-        Cube-Gun material code: <input type = "number" onchange = "top.packets.changeCubeId(this.value); top.packets.cube_gun(playerSid, top.packets.cubeID)" style = "border: 2px solid rgb(0, 180, 0); border-top: 4px solid rgb(0, 180, 0); color: #fff; outline: 0; background: #111111">
+        Cube-Gun material code: <input type = "number" onchange = "HackInterface.Weapons.CubeGunMaterial=+this.value; HackInterface.Weapons.CubeGun(+this.value)" style = "border: 2px solid rgb(0, 180, 0); border-top: 4px solid rgb(0, 180, 0); color: #fff; outline: 0; background: #111111">
         </column>
         <column style="display: none">
           <button onclick = "window.HackInterface.Keybinds.remove(document.getElementById('keybindTarget').value)"> - </button> <button onclick = "window.HackInterface.Keybinds.add(document.getElementById('keybindTarget').value, document.getElementById('lastKeyPressed').innerText)"> + </button> <span id = "lastKeyPressed"> </span>

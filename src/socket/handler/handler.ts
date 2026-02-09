@@ -100,6 +100,8 @@ export default class SocketHandler extends SocketHook {
       }
     } else if (packet[2] == 2) {
       return { result: "delay", delay: HackInterface.Exploits.BackTrack.Delay };
+    } else if (decodedText.includes("currentItem")) {
+      HackInterface.Logging.log("Packet: " + packet.join(" "));
     }
 
     return { result: "success", delay: 0 };
