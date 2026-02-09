@@ -134,6 +134,10 @@ class HackInterface {
   };
 
   static Exploits = class {
+    public static BackTrack = class {
+      static Delay = 0;
+    };
+
     public static RandomHP = new Timer()
       .withTimeout(100)
       .withCallback(() => {

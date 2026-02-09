@@ -94,6 +94,11 @@ client_menu.innerHTML = `
            <option value = "hpglitch"> Instant HP </option>
        </select> <span onclick = "window.HackInterface.Communism.marxism(document.querySelector('#select').value)"> Execute </span><br>
         Target player[s]?: <select id = "select1" style = "border: 2px solid rgb(0, 180, 0); border-top: 4px solid rgb(0, 180, 0); color: #fff; outline: 0; background: #111111"><option value = "me"> Self </option> <option value = "allme"> All, except self </option> <option value = "all"> All </option> </select>
+
+        <p title="Delays every player's movement packet on your side, so you can hit the enemies on their old positions"> Backtrack Delay:
+          <input type = "range" min = "0" max = "1000" value = "0" onchange = "HackInterface.Exploits.BackTrack.Delay = +this.value; document.getElementById('backtrackDelayValue').innerHTML = this.value;">
+            <span id = "backtrackDelayValue"> 0 </span>
+          </p>
         </column>
         <column style="display: none">
         <span onclick = "top.packets.wasmcache()"> Clear WASM Memory </span><br>

@@ -1,17 +1,23 @@
+import { HackInterface } from "../../global/interface";
 import { Intermediate } from "../../gui/intermediate";
 import SocketController from "../controller/controller";
 
 export default class SocketHook extends EventTarget {
   static EVENT = new Event("socket-hook-init");
 
-  private onmessageHandlers: ((event: MessageEvent) => void)[] = [];
+  private onmessageHandlers: ((event: MessageEvent) => {
+    result: string;
+    delay: number;
+  })[] = [];
   public socket?: WebSocket;
 
   constructor() {
     super();
   }
 
-  public withOnMessageHandler(handler: (event: MessageEvent) => void): this {
+  public withOnMessageHandler(
+    handler: (event: MessageEvent) => { result: string; delay: number },
+  ): this {
     this.onmessageHandlers.push(handler);
 
     return this;
@@ -39,13 +45,24 @@ export default class SocketHook extends EventTarget {
       set(value: (event: MessageEvent) => void) {
         socketWrapper.socket = this as unknown as WebSocket;
 
-        socketWrapper.socket.addEventListener("message", value);
         socketWrapper.socket.addEventListener(
           "message",
           (event: MessageEvent) => {
+            const verdicts: Array<{ result: string; delay: number }> = [];
+
             socketWrapper.onmessageHandlers.forEach((handler) =>
-              handler(event),
+              verdicts.push(handler(event)),
             );
+
+            const delayVerdict = verdicts.find((e) => e.result == "delay");
+
+            if (delayVerdict) {
+              setTimeout(() => {
+                value(event);
+              }, delayVerdict.delay);
+            } else {
+              value(event);
+            }
           },
         );
 

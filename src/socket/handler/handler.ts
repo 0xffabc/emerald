@@ -16,7 +16,7 @@ export default class SocketHandler extends SocketHook {
     });
   }
 
-  public onMessage(message: MessageEvent) {
+  public onMessage(message: MessageEvent): { result: string; delay: number } {
     const { data } = message;
 
     const packet = Array.from(new Uint8Array(data));
@@ -94,6 +94,10 @@ export default class SocketHandler extends SocketHook {
       HackInterface.Logging.log(`MyPlayer.PID is ${World.myPlayer.id}`);
 
       this.dispatchEvent(new Event("world-ready"));
+    } else if (packet[2] == 2) {
+      return { result: "delay", delay: HackInterface.Exploits.BackTrack.Delay };
     }
+
+    return { result: "success", delay: 0 };
   }
 }
