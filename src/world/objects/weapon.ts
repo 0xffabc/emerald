@@ -30,7 +30,7 @@ export class Weapon {
     );
 
     packet.integerU32(forPlayer);
-    packet.integerU16(17988, false);
+    packet.integerU16(18756, false);
 
     packet.integerU32(1, false);
     packet.string("isFiring");

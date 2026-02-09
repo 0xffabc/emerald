@@ -1,7 +1,10 @@
 import { Intermediate } from "../gui/intermediate";
 import { PHOTON_FLAGS, PHOTON_HEADERS } from "../packet/constants/photon";
+import { Mix } from "../packet/mix/mix";
 import { Serializer } from "../packet/serialize/serialize";
 import SocketController from "../socket/controller/controller";
+import type { Player } from "../world/objects/player";
+import { Weapon } from "../world/objects/weapon";
 import { Bazooka } from "../world/weapons/bazooka";
 import { CentralGun } from "../world/weapons/central-gun";
 import { DoublePistol } from "../world/weapons/double-pistol";
@@ -18,6 +21,77 @@ import { World } from "../world/world";
 import { Timer } from "./lib/timer";
 
 class HackInterface {
+  static Communism = class {
+    private static Weapons: any = {
+      none: Weapon,
+      bazooka: Bazooka,
+      central: CentralGun,
+      pistols: DoublePistol,
+      flame: FlameThrower,
+      growthgun: GrowthGun,
+      heal_gun: HealGun,
+      impulse_gun: ImpulseGun,
+      pistol: Pistol,
+      rail: RailGun,
+      shotgun: Shotgun,
+      shuriken: Shuriken,
+      sword: Sword,
+    };
+
+    static globalExecute(callback: (_: Player) => void) {
+      World.PlayerManager.players.forEach((player) => {
+        if (player.id == World.myPlayer?.id) return;
+
+        callback(player);
+      });
+    }
+
+    static marxism(action: string) {
+      switch (action) {
+        case "immortality":
+          this.globalExecute((player) => {
+            player.applyImmortalityExploit();
+          });
+          return;
+        case "setScale":
+          this.globalExecute((player) => {
+            const packet = Mix.enlarged(player.id);
+
+            SocketController.simulateServerPacket(Array.from(packet));
+          });
+          return;
+        case "cube":
+          this.globalExecute((player) => {
+            const queue = [
+              Mix.cube(player.id, 0, 0, 0),
+              Mix.oldKick(player.id),
+              Mix.movement(player.id),
+            ];
+
+            queue.forEach((packet) =>
+              SocketController.simulateServerPacket(Array.from(packet)),
+            );
+          });
+          return;
+        case "hpGlitch":
+          this.globalExecute((player) => {
+            player.setHealth(Math.random() * 100);
+          });
+          return;
+      }
+
+      const weaponClass = this.Weapons[action] as Weapon;
+
+      if (weaponClass) {
+        const weapon: Weapon = new (weaponClass as any)();
+
+        this.globalExecute((player) => {
+          player.setWeapon(weapon);
+        });
+      }
+    }
+  };
+
   static Debug = class {
     static TestBadMsg() {
       const packet = new Serializer(PHOTON_HEADERS.TYPE_4, PHOTON_FLAGS.ACTION);
@@ -39,6 +113,15 @@ class HackInterface {
   };
 
   static Exploits = class {
+    public static RandomHP = new Timer()
+      .withTimeout(100)
+      .withCallback(() => {
+        World.PlayerManager.players.forEach((player) => {
+          player.setHealth(Math.random() * 100);
+        });
+      })
+      .build();
+
     public static InfiniteWeapon = new Timer()
       .withTimeout(1000)
       .withCallback(() => {
