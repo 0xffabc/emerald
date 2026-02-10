@@ -20,6 +20,18 @@ export class GUIElement {
   }
 
   /**
+   * @name value
+   * @description Sets the value of the element.
+   * @param value
+   * @returns
+   */
+  public value(value: string): GUIElement {
+    (this.element as HTMLInputElement).value = value;
+
+    return this;
+  }
+
+  /**
    * @name id
    * @description Sets the id of the element.
    * @param id

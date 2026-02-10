@@ -5,5 +5,6 @@ export enum ServerPackets {
   SPAWN_CUBE = 79,
   SPAWN_WEAPON = 29,
   SET_ACCESSORY = 25,
-  RECEIVE_PLAYERS = 61,
+  RECEIVE_PLAYERS = 62,
+  USE_WEAPON = 30,
 }
