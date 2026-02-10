@@ -83,8 +83,6 @@ export class Weapon {
 
     const buffer = packet.end(false);
 
-    HackInterface.Logging.log("Packet: " + buffer.join(" "));
-
     return new Uint8Array(buffer);
   }
 }

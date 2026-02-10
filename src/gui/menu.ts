@@ -26,7 +26,7 @@ client_menu.innerHTML = `
     <div style="font-size: 15px; position: absolute; top: 45px; left: 28px">
       <span class = "kogama__" onclick="[...document.querySelectorAll('column')].forEach(e => e.style.display='none'); [...document.querySelectorAll('column')][0].style.display='block'">Weapons</span>
       <span class = "kogama__" onclick="[...document.querySelectorAll('column')].forEach(e => e.style.display='none'); [...document.querySelectorAll('column')][1].style.display='block'">Players</span>
-      <span onclick="[...document.querySelectorAll('column')].forEach(e => e.style.display='none'); [...document.querySelectorAll('column')][2].style.display='block'">Game</span>
+      <span onclick="[...document.querySelectorAll('column')].forEach(e => e.style.display='none'); [...document.querySelectorAll('column')][2].style.display='block'">Combat</span>
       <span onclick="[...document.querySelectorAll('column')].forEach(e => e.style.display='none'); [...document.querySelectorAll('column')][3].style.display='block'">Info</span>
       <span onclick="[...document.querySelectorAll('column')].forEach(e => e.style.display='none'); [...document.querySelectorAll('column')][4].style.display='block'">Logging</span>
       <span onclick="[...document.querySelectorAll('column')].forEach(e => e.style.display='none'); [...document.querySelectorAll('column')][5].style.display='block'">Cubes</span>
@@ -104,7 +104,41 @@ client_menu.innerHTML = `
           </p>
         </column>
         <column style="display: none">
-          oh
+          <p> Weapon merger </p>
+          <p>
+            Target weapon:
+            <select id = "select2" style = "border: 2px solid rgb(0, 180, 0); border-top: 4px solid rgb(0, 180, 0); color: #fff; outline: 0; background: #111111">
+              <option value = "CubeGun"> CubeGun </option>
+              <option value = "ImpulseGun"> Impulse Gun </option>
+              <option value = "Bazooka"> Bazooka </option>
+              <option value = "FlameThrower"> Flamethrower </option>
+              <option value = "HealGun"> Healer Gun </option>
+              <option value = "DoublePistol"> Pistols </option>
+              <option value = "CentralGun"> Central </option>
+              <option value = "Shuriken"> Shuriken </option>
+              <option value = "Shotgun"> Shotgun </option>
+              <option value = "RailGun"> Rail Gun </option>
+              <option value = "Sword"> Sword </option>
+            </select>
+          </p>
+          <p>
+            Aux weapon:
+            <select id = "select3" style = "border: 2px solid rgb(0, 180, 0); border-top: 4px solid rgb(0, 180, 0); color: #fff; outline: 0; background: #111111">
+              <option value = "CubeGun"> CubeGun </option>
+              <option value = "ImpulseGun"> Impulse Gun </option>
+              <option value = "Bazooka"> Bazooka </option>
+              <option value = "FlameThrower"> Flamethrower </option>
+              <option value = "HealGun"> Healer Gun </option>
+              <option value = "DoublePistol"> Pistols </option>
+              <option value = "CentralGun"> Central </option>
+              <option value = "Shuriken"> Shuriken </option>
+              <option value = "Shotgun"> Shotgun </option>
+              <option value = "RailGun"> Rail Gun </option>
+              <option value = "Sword"> Sword </option>
+            </select>
+          </p>
+          <button onclick="HackInterface.Exploits.WeaponMerger.mergeWeapons([document.getElementById('select2').value, document.getElementById('select3').value].join(','))"> Merge </button>
+          <button onclick="HackInterface.Exploits.WeaponMerger.unlink()"> Unlink </button>
         </column>
         <column style="display: none; word-break: break-word">
         Debugging Info <br>

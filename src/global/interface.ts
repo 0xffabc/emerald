@@ -1,4 +1,5 @@
 import { Intermediate } from "../gui/intermediate";
+import { WeaponMerger } from "../hack/exploits/weapon-merger";
 import { PHOTON_FLAGS, PHOTON_HEADERS } from "../packet/constants/photon";
 import { Mix } from "../packet/mix/mix";
 import { Serializer } from "../packet/serialize/serialize";
@@ -136,6 +137,30 @@ class HackInterface {
   };
 
   static Exploits = class {
+    public static WeaponMerger = class {
+      static instance: WeaponMerger | null = null;
+
+      static unlink() {
+        if (this.instance) {
+          this.instance.destroy();
+          this.instance = null;
+        }
+      }
+
+      static mergeWeapons(weapons: string) {
+        this.unlink();
+
+        this.instance = WeaponMerger.fromString(weapons);
+
+        Intermediate.notification(
+          "Merged weapons: " +
+            this.instance.weapons.map((e) => e.toString()).join(", "),
+        );
+
+        return this.instance;
+      }
+    };
+
     public static BackTrack = class {
       static Delay = 0;
     };
