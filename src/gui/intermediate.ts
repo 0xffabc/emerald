@@ -14,7 +14,8 @@ export class Intermediate {
     document.documentElement.appendChild(notif);
 
     setTimeout(() => {
-      this.notificationOffset -= 120;
+      this.notificationOffset = Math.max(this.notificationOffset - 120, 0);
+
       notif.remove();
     }, 6000);
   }

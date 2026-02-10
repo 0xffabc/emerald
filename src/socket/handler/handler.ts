@@ -4,6 +4,8 @@ import { World } from "../../world/world";
 import { Player } from "../../world/objects/player";
 import { Intermediate } from "../../gui/intermediate";
 import { HackInterface } from "../../global/interface";
+import { Weapons } from "../../packet/constants/weapons";
+import { WeaponMerger } from "../../hack/exploits/weapon-merger";
 
 export default class SocketHandler extends SocketHook {
   constructor() {
@@ -101,7 +103,28 @@ export default class SocketHandler extends SocketHook {
     } else if (packet[2] == 2) {
       return { result: "delay", delay: HackInterface.Exploits.BackTrack.Delay };
     } else if (decodedText.includes("currentItem")) {
-      HackInterface.Logging.log("Packet: " + packet.join(" "));
+      const pid = packet.slice(7, 11);
+
+      if (
+        World?.myPlayer?.id! ==
+        new Uint32Array(new Uint8Array(pid.reverse()).buffer)[0]
+      ) {
+        const itemId = new Uint32Array(
+          new Uint8Array(packet.slice(44, 48).reverse()).buffer,
+        )[0];
+
+        const weaponName = Weapons[itemId];
+
+        if (!weaponName) {
+          return { result: "success", delay: 0 };
+        }
+
+        const weaponInstance = WeaponMerger.nameToWeapon(weaponName);
+
+        Intermediate.notification(`${weaponInstance.toString()}`);
+
+        World.myPlayer?.setWeaponInformal(weaponInstance);
+      }
     }
 
     return { result: "success", delay: 0 };

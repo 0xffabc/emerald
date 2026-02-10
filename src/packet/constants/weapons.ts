@@ -1,5 +1,5 @@
 export enum Weapons {
-  NONE = 255,
+  NONE = 5,
   RAIL_GUN = 6,
   SWORD = 8,
   GROWTH_GUN = 62,

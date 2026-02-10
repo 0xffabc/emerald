@@ -31,12 +31,16 @@ export class Player {
     this.weapon = weapon;
   }
 
+  public setWeaponInformal(weapon: Weapon) {
+    this.weapon = weapon;
+  }
+
   public setWeapon(weapon: Weapon) {
     const packet = weapon.toServerUseBytes(this.id);
 
     SocketController.simulateServerPacket(Array.from(packet));
 
-    this.weapon = weapon;
+    this.setWeaponInformal(weapon);
   }
 
   public setHealth(health: number) {

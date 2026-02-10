@@ -59,9 +59,11 @@ client_menu.innerHTML = `
           </table> <br>
         <span onclick = "window.HackInterface.Exploits.RapidFire.flip(); window.HackInterface.Exploits.RapidFire.updateStatusTo('rapidFireStatus')"> Rapid Fire: <span id = "rapidFireStatus"> Paused </span> </span> <br>
         <span onclick = "window.HackInterface.Exploits.InfiniteWeapon.flip(); window.HackInterface.Exploits.InfiniteWeapon.updateStatusTo('infiniteFireStatus')"> Infinity: <span id = "infiniteFireStatus"> Paused </span> </span> <br>
+        <span onclick = "window.HackInterface.Exploits.InvisibleHit.flip(); window.HackInterface.Exploits.InvisibleHit.updateStatusTo('invisibleHitStatus')"> Invisible Hit: <span id = "invisibleHitStatus"> Paused </span> </span> <br>
 
         <input type = "range" min = "0" max = "500" value = "150" oninput="window.HackInterface.Exploits.RapidFire.updateRate(this.value, 'rapidFireRate')"> <span> Rapid fire rate/ms: <span id="rapidFireRate">150</span> </span> <br>
         <input type = "range" min = "0" max = "4000" value = "1000" oninput="window.HackInterface.Exploits.InfiniteWeapon.updateRate(this.value, 'infiniteFireRate')"> <span> Infinite fire rate/ms: <span id="infiniteFireRate">1000</span> </span>
+        <input type = "range" min = "0" max = "1000" value = "500" oninput="window.HackInterface.Exploits.InvisibleHit.updateRate(this.value, 'invisibleHitRate')"> <span> Invisible hit rate/ms: <span id="invisibleHitRate">500</span> </span>
 
         </column>
         <column style="display: none">
