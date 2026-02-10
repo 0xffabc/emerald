@@ -1,0 +1,19 @@
+{
+  "accentColor": "rgb(0, 180, 0)",
+  "background": "rgba(0, 0, 0, 0.5)",
+  "font": {
+    "family": "Arial",
+    "color": "#fff",
+    "size": {
+      "large": "20px",
+      "medium": "15px",
+      "small": "8px"
+    }
+  },
+  "border": {
+    "color": "rgb(0, 180, 0)",
+    "type": "solid",
+    "thickness": "5px"
+  },
+  "effect": "backdrop-filter: blur(5px)"
+}
