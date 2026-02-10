@@ -16,7 +16,7 @@ import { World } from "../../world/world";
 export class Weapons {
   static CubeGunMaterial = 1;
 
-  static CubeGun(material: number = -1) {
+  public static CubeGun(material: number = -1) {
     if (material === -1) {
       material = this.CubeGunMaterial;
     }
@@ -24,51 +24,51 @@ export class Weapons {
     World.myPlayer?.setWeapon(new CubeGun(material));
   }
 
-  static Bazooka() {
+  public static Bazooka() {
     World.myPlayer?.setWeapon(new Bazooka());
   }
 
-  static CentralGun() {
+  public static CentralGun() {
     World.myPlayer?.setWeapon(new CentralGun());
   }
 
-  static DoublePistol() {
+  public static DoublePistol() {
     World.myPlayer?.setWeapon(new DoublePistol());
   }
 
-  static FlameThrower() {
+  public static FlameThrower() {
     World.myPlayer?.setWeapon(new FlameThrower());
   }
 
-  static GrowthGun() {
+  public static GrowthGun() {
     World.myPlayer?.setWeapon(new GrowthGun());
   }
 
-  static HealGun() {
+  public static HealGun() {
     World.myPlayer?.setWeapon(new HealGun());
   }
 
-  static ImpulseGun() {
+  public static ImpulseGun() {
     World.myPlayer?.setWeapon(new ImpulseGun());
   }
 
-  static Pistol() {
+  public static Pistol() {
     World.myPlayer?.setWeapon(new Pistol());
   }
 
-  static RailGun() {
+  public static RailGun() {
     World.myPlayer?.setWeapon(new RailGun());
   }
 
-  static Shotgun() {
+  public static Shotgun() {
     World.myPlayer?.setWeapon(new Shotgun());
   }
 
-  static Shuriken() {
+  public static Shuriken() {
     World.myPlayer?.setWeapon(new Shuriken());
   }
 
-  static Sword() {
+  public static Sword() {
     World.myPlayer?.setWeapon(new Sword());
   }
 }

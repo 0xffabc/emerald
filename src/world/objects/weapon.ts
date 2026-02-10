@@ -21,18 +21,35 @@ export class Weapon {
     return 3;
   }
 
+  /**
+   * @name toString
+   * @description Returns a string representation of the weapon.
+   * @returns {string} The string representation of the weapon.
+   */
   public toString(): string {
     return `Weapon(name=${Weapons[this.id] ?? "Unknown"}, id=${this.id})`;
   }
 
   public intermediateProcess(_packet: Serializer) {}
 
+  /**
+   * @name toFireEvent
+   * @description Sends a fire event packet to the server.
+   * @param forPlayer The player ID to send the packet to.
+   * @returns
+   */
   public toFireEvent(forPlayer: number): Uint8Array {
     return new Uint8Array(
       new WeaponImplServer(WeaponPacketType.FIRE_EVENT, forPlayer).serialize(),
     );
   }
 
+  /**
+   * @name toServerUseBytes
+   * @description Sends a use event packet to the server.
+   * @param forPlayer The player ID to send the packet to.
+   * @returns
+   */
   public toServerUseBytes(forPlayer: number): Uint8Array {
     HackInterface.Keybinds.addBottomText(
       this.toString(),

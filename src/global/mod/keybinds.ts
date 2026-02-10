@@ -7,6 +7,11 @@ export class Keybinds {
     return JSON.parse(localStorage.getItem("keybinds") || "{}");
   }
 
+  /**
+   * @name remove
+   * @description Removes a keybind from the keybind manager
+   * @param key Key to remove
+   */
   public static remove(key: string) {
     const data = this.pullKeybindManagerData();
 
@@ -17,6 +22,12 @@ export class Keybinds {
     this.updateKeybindsList();
   }
 
+  /**
+   * @name add
+   * @description Adds a keybind to the keybind manager
+   * @param key Key to add
+   * @param value
+   */
   public static add(key: string, value: string) {
     const data = this.pullKeybindManagerData();
 
@@ -27,6 +38,11 @@ export class Keybinds {
     this.updateKeybindsList();
   }
 
+  /**
+   * @name updateKeybindsList
+   * @description Updates the keybinds list in the UI
+   * @returns
+   */
   public static updateKeybindsList() {
     const data = this.pullKeybindManagerData();
 
@@ -45,6 +61,12 @@ export class Keybinds {
     }
   }
 
+  /**
+   * @name checkKeybindAndExecute
+   * @description Checks if a keybind is active and executes it
+   * @param key Key to check
+   * @returns
+   */
   public static checkKeybindAndExecute(key: string) {
     const keyToggleInfo = this.activeKeybinds.has(key);
 
@@ -88,6 +110,14 @@ export class Keybinds {
     eval("window." + keyData);
   }
 
+  /**
+   * @name addBottomText
+   * @description Adds a bottom text to the keybind manager, a.k.a the panel in bottom-right
+   * corner of the screen
+   * @param id ID of the text element
+   * @param text
+   * @param isTemp
+   */
   public static addBottomText(
     id: string,
     text: string,
@@ -117,6 +147,12 @@ export class Keybinds {
     }, 20);
   }
 
+  /**
+   * @name removeBottomText
+   * @description Removes a bottom text from the keybind manager, a.k.a the panel in bottom-right
+   * corner of the screen
+   * @param id ID of the text element
+   */
   public static removeBottomText(id: string) {
     const element = document.getElementById(id);
 

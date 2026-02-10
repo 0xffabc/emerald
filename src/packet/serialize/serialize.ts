@@ -28,12 +28,25 @@ export class Serializer {
     this.integerU32(flag, false);
   }
 
+  /**
+   * @name raw
+   * @description Adds a raw byte array to the buffer
+   * @param value The byte array to add
+   * @returns
+   */
   public raw(value: number[]): Serializer {
     this.#buffer.push(...value);
 
     return this;
   }
 
+  /**
+   * @name integerU32
+   * @description Adds a 32-bit unsigned integer to the buffer
+   * @param value The integer to add
+   * @param flag Whether to add the marker byte
+   * @returns
+   */
   public integerU32(value: number, flag: boolean = true): Serializer {
     if (flag) {
       this.#buffer.push(SerializerMarkers.U32);
@@ -46,6 +59,13 @@ export class Serializer {
     return this;
   }
 
+  /**
+   * @name integerU16
+   * @description Adds a 16-bit unsigned integer to the buffer
+   * @param value The integer to add
+   * @param flag Whether to add the marker byte
+   * @returns
+   */
   public integerU16(value: number, flag: boolean = true): Serializer {
     this.#buffer.push(
       ...(flag ? [SerializerMarkers.U32] : []),
@@ -55,6 +75,13 @@ export class Serializer {
     return this;
   }
 
+  /**
+   * @name string
+   * @description Adds a string to the buffer
+   * @param value The string to add
+   * @param flag Whether to add the marker byte
+   * @returns
+   */
   public string(value: string, flag: boolean = true): Serializer {
     const bytes = new TextEncoder().encode(value);
 
@@ -68,6 +95,13 @@ export class Serializer {
     return this;
   }
 
+  /**
+   * @name float32
+   * @description Adds a 32-bit floating point number to the buffer
+   * @param value The number to add
+   * @param flag Whether to add the marker byte
+   * @returns
+   */
   public float32(value: number): Serializer {
     this.#buffer.push(SerializerMarkers.FLOAT32);
     this.#buffer.push(...to32xConvertedFloat(value));
@@ -75,18 +109,36 @@ export class Serializer {
     return this;
   }
 
+  /**
+   * @name btrue
+   * @description Adds a boolean true value to the buffer
+   * @param flag Whether to add the marker byte
+   * @returns
+   */
   public btrue(): Serializer {
     this.#buffer.push(SerializerMarkers.TRUE);
 
     return this;
   }
 
+  /**
+   * @name bfalse
+   * @description Adds a boolean false value to the buffer
+   * @param flag Whether to add the marker byte
+   * @returns
+   */
   public bfalse(): Serializer {
     this.#buffer.push(SerializerMarkers.FALSE);
 
     return this;
   }
 
+  /**
+   * @name end
+   * @description Adds an end marker to the buffer
+   * @param flag Whether to add the marker byte
+   * @returns
+   */
   public end(flag: boolean = true): number[] {
     if (flag) {
       this.#buffer.push(SerializerMarkers.END);

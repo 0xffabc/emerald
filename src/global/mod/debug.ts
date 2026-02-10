@@ -7,6 +7,12 @@ class DebugBadPacket extends Serializer {
     super(PHOTON_HEADERS.TYPE_4, PHOTON_FLAGS.ACTION);
   }
 
+  /**
+   * @name serialize
+   * @description Serializes the packet data.
+   * @returns Debug test for whether websocket hook is working. The game
+   * will print a spurious error if it does.
+   */
   public serialize() {
     this.string("0xffabc!");
 
@@ -15,7 +21,11 @@ class DebugBadPacket extends Serializer {
 }
 
 export class Debug {
-  static TestBadMsg() {
+  /**
+   * @name TestBadMsg
+   * @description Sends a debug packet to test the websocket hook.
+   */
+  public static TestBadMsg() {
     const packet = new DebugBadPacket().serialize();
 
     SocketController.simulateServerPacket(packet);

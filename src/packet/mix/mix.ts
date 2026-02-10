@@ -1,7 +1,13 @@
 import { to16xConvertedByte, to32xConvertedByte } from "../core/utils";
 
 export class Mix {
-  static enlarged(pid: number) {
+  /**
+   * @name enlarged
+   * @description Enlarges the target woID
+   * @param pid
+   * @returns
+   */
+  public static enlarged(pid: number) {
     return new Uint8Array([
       243,
       4,
@@ -57,7 +63,14 @@ export class Mix {
     ]);
   }
 
-  static movement(pid: number) {
+  /**
+   * @name movement
+   * @description I have no idea what it does now, but it was sent every time
+   * a player left the game
+   * @param pid
+   * @returns
+   */
+  public static movement(pid: number) {
     return new Uint8Array([
       243,
       2,
@@ -74,7 +87,17 @@ export class Mix {
     ]);
   }
 
-  static cube(
+  /**
+   * @name cube
+   * @description Supposed to assist spawning cubes
+   * @param _pid
+   * @param x
+   * @param y
+   * @param z
+   * @param material
+   * @returns
+   */
+  public static cube(
     _pid: number,
     x: number,
     y: number,
@@ -110,7 +133,13 @@ export class Mix {
     ]);
   }
 
-  static oldKick(pid: number) {
+  /**
+   * @name oldKick
+   * @description Sends a packet to kick a player from the game, worked in 2021
+   * @param pid
+   * @returns
+   */
+  public static oldKick(pid: number) {
     return new Uint8Array([
       243,
       2,

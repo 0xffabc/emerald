@@ -196,6 +196,11 @@ class ClientMenu extends GUITemplate {
       .build();
   }
 
+  /**
+   * @name build
+   * @description Builds the menu element.
+   * @returns The menu element.
+   */
   public build(): HTMLElement {
     const base = this.createMenuBase();
 

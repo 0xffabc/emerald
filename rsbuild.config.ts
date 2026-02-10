@@ -1,7 +1,14 @@
-import { defineConfig } from '@rsbuild/core';
-import { pluginReact } from '@rsbuild/plugin-react';
+import { defineConfig } from "@rsbuild/core";
 
-// Docs: https://rsbuild.rs/config/
 export default defineConfig({
-  plugins: [pluginReact()],
+  tools: {
+    rspack: (config, { appendRules }) => {
+      appendRules([
+        {
+          test: /\.html$/,
+          type: "asset/source",
+        },
+      ]);
+    },
+  },
 });

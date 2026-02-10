@@ -36,7 +36,12 @@ export class Communism {
     sword: Sword,
   };
 
-  static globalExecute(callback: (_: Player) => void) {
+  /**
+   * @name globalExecute
+   * @description Executes a callback function on all players or a specific player.
+   * @param callback The callback function to execute.
+   */
+  public static globalExecute(callback: (_: Player) => void) {
     const target = (document.querySelector("#select1")! as HTMLSelectElement)
       .value;
 
@@ -65,7 +70,12 @@ export class Communism {
     }
   }
 
-  static marxism(action: string) {
+  /**
+   * @name marxism
+   * @description Executes a callback function on all players or a specific player.
+   * @param action The action to perform.
+   */
+  public static marxism(action: string) {
     switch (action) {
       case "immortality":
         this.globalExecute((player) => {

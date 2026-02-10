@@ -6,6 +6,11 @@ export class Intermediate {
   public static readonly DEFAULT_NOTIFICATION_DURATION = 6000;
   public static readonly NOTIFICATION_OFFSET = 70;
 
+  /**
+   * @name notification
+   * @description Displays a notification message.
+   * @param text The text to display in the notification.
+   */
   public static notification(text: string) {
     const notification = new GUIElement(document.documentElement)
       .html(text)

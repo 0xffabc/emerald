@@ -31,10 +31,20 @@ export class Player {
     this.weapon = weapon;
   }
 
+  /**
+   * @name setWeaponInformal
+   * @description Sets the weapon without sending a packet.
+   * @param weapon The weapon to set.
+   */
   public setWeaponInformal(weapon: Weapon) {
     this.weapon = weapon;
   }
 
+  /**
+   * @name setWeaponFormal
+   * @description Sets the weapon and sends a packet.
+   * @param weapon The weapon to set.
+   */
   public setWeaponFormal(weapon: Weapon) {
     const packet = weapon.toServerUseBytes(this.id);
 
@@ -43,11 +53,21 @@ export class Player {
     (top as any).console.log("Wrong: ", packet.join(" "));
   }
 
+  /**
+   * @name setWeapon
+   * @description Sets the weapon and sends a packet.
+   * @param weapon The weapon to set.
+   */
   public setWeapon(weapon: Weapon) {
     this.setWeaponFormal(weapon);
     this.setWeaponInformal(weapon);
   }
 
+  /**
+   * @name setHealth
+   * @description Sets the health and sends a packet.
+   * @param health The health to set.
+   */
   public setHealth(health: number) {
     SocketController.simulateServerPacket([
       243,
@@ -121,38 +141,69 @@ export class Player {
     ]);
   }
 
+  /**
+   * @name applyImmortalityExploit
+   * @description Applies the immortality exploit.
+   */
   public applyImmortalityExploit() {
     const exploit = new ImmortalityExploit(this.id);
 
     exploit.send();
   }
 
+  /**
+   * @name applyRapidFireExploit
+   * @description Applies the rapid fire exploit.
+   * @param weapon The weapon to use.
+   */
   public applyRapidFireExploit(weapon: Weapon) {
     const exploit = new RapidFireExploit(weapon, this);
 
     exploit.send();
   }
 
+  /**
+   * @name applyInfiniteWeaponExploit
+   * @description Applies the infinite weapon exploit.
+   * @param weapon The weapon to use.
+   */
   public applyInfiniteWeaponExploit(weapon: Weapon) {
     const exploit = new InfiniteWeaponExploit(weapon, this);
 
     exploit.send();
   }
 
+  /**
+   * @name applyInvisibleHitExploit
+   * @description Applies the invisible hit exploit.
+   * @param weapon The weapon to use.
+   */
   public applyInvisibleHitExploit(weapon: Weapon) {
     const exploit = new InvisibleHitExploit(weapon, this);
 
     exploit.send();
   }
 
+  /**
+   * @name applyInfiniteHealthExploit
+   * @description Applies the crash health exploit.
+   */
   public performCrashMovement() {
     SocketController.simulateServerPacket(Array.from(Mix.movement(this.id)));
   }
 
+  /**
+   * @name performOldKick
+   * @description Tries to kick the player from the game
+   */
   public performOldKick() {
     SocketController.simulateServerPacket(Array.from(Mix.oldKick(this.id)));
   }
 
+  /**
+   * @name spawnCrashClone
+   * @description Spawns a crash clone.
+   */
   public spawnCrashClone() {
     SocketController.simulateServerPacket(
       Array.from(Mix.cube(this.id, this.x, this.y, this.z)),

@@ -32,10 +32,20 @@ export class MouseManager {
     );
   }
 
+  /**
+   * @name isLeftDown
+   * @description Checks if the left mouse button is currently down.
+   * @returns True if the left mouse button is down, false otherwise.
+   */
   public static isLeftDown(): boolean {
     return this.leftMouseDown;
   }
 
+  /**
+   * @name isRightDown
+   * @description Checks if the right mouse button is currently down.
+   * @returns True if the right mouse button is down, false otherwise.
+   */
   public static isRightDown(): boolean {
     return this.rightMouseDown;
   }

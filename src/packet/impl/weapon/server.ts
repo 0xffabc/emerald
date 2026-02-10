@@ -29,6 +29,11 @@ export class WeaponImplServer extends Serializer {
     this.config = config;
   }
 
+  /**
+   * @name serialize
+   * @description Serializes the WeaponImplServer packet
+   * @returns The serialized packet
+   */
   public serialize() {
     switch (this.type) {
       case WeaponPacketType.FIRE_EVENT:

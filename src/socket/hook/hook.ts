@@ -15,6 +15,12 @@ export default class SocketHook extends EventTarget {
     super();
   }
 
+  /**
+   * @name withOnMessageHandler
+   * @description Adds a new onmessage handler to the list of handlers.
+   * @param handler The handler to add.
+   * @returns
+   */
   public withOnMessageHandler(
     handler: (event: MessageEvent) => {
       result: string;
@@ -27,6 +33,11 @@ export default class SocketHook extends EventTarget {
     return this;
   }
 
+  /**
+   * @name build
+   * @description Builds the hook.
+   * @returns
+   */
   public build() {
     Object.defineProperty(
       WebSocket.prototype,
@@ -37,6 +48,11 @@ export default class SocketHook extends EventTarget {
     return this;
   }
 
+  /**
+   * @name internalOnMessageHandler
+   * @description The internal onmessage handler.
+   * @returns
+   */
   get internalOnMessageHandler() {
     const socketWrapper = this;
 
