@@ -1,0 +1,46 @@
+<p>Weapon merger</p>
+<p>
+    Target weapon:
+    <select id="select2" style="color: #fff; outline: 0; background: #111111">
+        <option value="CubeGun">CubeGun</option>
+        <option value="ImpulseGun">Impulse Gun</option>
+        <option value="Bazooka">Bazooka</option>
+        <option value="FlameThrower">Flamethrower</option>
+        <option value="HealGun">Healer Gun</option>
+        <option value="DoublePistol">Pistols</option>
+        <option value="CentralGun">Central</option>
+        <option value="Shuriken">Shuriken</option>
+        <option value="Shotgun">Shotgun</option>
+        <option value="RailGun">Rail Gun</option>
+        <option value="Sword">Sword</option>
+    </select>
+</p>
+<p>
+    Aux weapon:
+    <select id="select3" style="color: #fff; outline: 0; background: #111111">
+        <option value="CubeGun">CubeGun</option>
+        <option value="ImpulseGun">Impulse Gun</option>
+        <option value="Bazooka">Bazooka</option>
+        <option value="FlameThrower">Flamethrower</option>
+        <option value="HealGun">Healer Gun</option>
+        <option value="DoublePistol">Pistols</option>
+        <option value="CentralGun">Central</option>
+        <option value="Shuriken">Shuriken</option>
+        <option value="Shotgun">Shotgun</option>
+        <option value="RailGun">Rail Gun</option>
+        <option value="Sword">Sword</option>
+    </select>
+</p>
+<button
+    onclick="
+        HackInterface.Exploits.WeaponMerger.mergeWeapons(
+            [
+                document.getElementById('select2').value,
+                document.getElementById('select3').value,
+            ].join(','),
+        )
+    "
+>
+    Merge
+</button>
+<button onclick="HackInterface.Exploits.WeaponMerger.unlink()">Unlink</button>

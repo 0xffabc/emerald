@@ -29,9 +29,9 @@ export class MouseListener {
     this.mouseUpListeners.push(mouseUpListener);
   }
 
-  onLeftMouseDown(): void {}
-  onRightMouseDown(): void {}
+  protected onLeftMouseDown(): void {}
+  protected onRightMouseDown(): void {}
 
-  onLeftMouseUp(): void {}
-  onRightMouseUp(): void {}
+  protected onLeftMouseUp(): void {}
+  protected onRightMouseUp(): void {}
 }

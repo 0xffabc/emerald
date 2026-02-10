@@ -1,0 +1,50 @@
+<button
+    onclick="
+        window.HackInterface.Keybinds.remove(
+            document.getElementById('keybindTarget').value,
+        )
+    "
+>
+    -
+</button>
+<button
+    onclick="
+        window.HackInterface.Keybinds.add(
+            document.getElementById('keybindTarget').value,
+            document.getElementById('lastKeyPressed').innerText,
+        )
+    "
+>
+    +
+</button>
+<span id="lastKeyPressed"> </span> For:
+<select id="keybindTarget" style="color: #fff; outline: 0; background: #111111">
+    <option value="HackInterface.Exploits.RapidFire()">Rapid fire</option>
+    <option value="HackInterface.Exploits.InfiniteWeapon()">
+        Infinite fire
+    </option>
+    <option value="HackInterface.Exploits.InvisibleHit()">Invisible hit</option>
+    <option value="HackInterface.Communism.marxism('immortality')">
+        Immortality (Permanent)
+    </option>
+    <option value="HackInterface.Communism.marxism('Enlarge')">
+        Enlarge (Permanent)
+    </option>
+    <option value="HackInterface.Communism.marxism('hpGlitch')">
+        HP Glitch (Until death)
+    </option>
+    <option value="HackInterface.Weapons.CubeGun()">CubeGun</option>
+    <option value="HackInterface.Weapons.ImpulseGun()">Impulse Gun</option>
+    <option value="HackInterface.Weapons.Bazooka()">Bazooka</option>
+    <option value="HackInterface.Weapons.FlameThrower()">Flametower</option>
+    <option value="HackInterface.Weapons.HealGun()">Healer Gun</option>
+    <option value="HackInterface.Weapons.DoublePistol()">Pistols</option>
+    <option value="HackInterface.Weapons.CentralGun()">Central</option>
+    <option value="HackInterface.Weapons.Shuriken()">Shuriken</option>
+    <option value="HackInterface.Weapons.Shotgun()">Shotgun</option>
+    <option value="HackInterface.Weapons.RailGun()">Rail Gun</option>
+    <option value="HackInterface.Weapons.Sword()">Sword</option>
+    <option value="HackInterface.Weapons.GrowthGun()">Slapgun Spawner</option>
+    <option value="HackInterface.Weapons.Pistol()">Pistol (1x)</option>
+</select>
+<ul id="keybindsList"></ul>

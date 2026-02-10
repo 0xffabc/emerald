@@ -1,0 +1,83 @@
+<p style="font-weight: bold">Destruction</p>
+<span onclick="window.HackInterface.Exploits.Immortality()">
+    Immortality: Physical</span
+>
+<br />
+
+<span
+    onclick="
+        window.HackInterface.Exploits.RandomHP.flip();
+        window.HackInterface.Exploits.RandomHP.updateStatusTo('randomHPStatus');
+    "
+>
+    Random HP: <span id="randomHPStatus"> Paused </span>
+</span>
+<br />
+<input
+    type="range"
+    min="0"
+    max="4000"
+    value="1000"
+    oninput="
+        window.HackInterface.Exploits.InfiniteWeapon.updateRate(
+            this.value,
+            'randomHPRate',
+        )
+    "
+/>
+<span> Infinite fire rate/ms: <span id="randomHPRate">1000</span> </span>
+
+<p style="font-weight: bold">Communism</p>
+<select id="select" style="color: #fff; outline: 0; background: #111111">
+    <option value="none">Disspell</option>
+    <option value="cube_gun">CubeGun</option>
+    <option value="impulse_gun">Impulse Gun</option>
+    <option value="bazooka">Bazooka</option>
+    <option value="flame">Flametower</option>
+    <option value="heal_gun">Healer Gun</option>
+    <option value="pistols">Pistols</option>
+    <option value="central">Central</option>
+    <option value="shuriken">Shuriken</option>
+    <option value="shotgun">Shotgun</option>
+    <option value="rail">Rail Gun</option>
+    <option value="sword">Sword</option>
+    <option value="growthgun">Slapgun Spawner</option>
+    <option value="pistol">Pistol (1x)</option>
+    <option value="immortality">Immortality (Physical)</option>
+    <option value="setScale">Scalarity</option>
+    <option value="cube">Spawn Yourself</option>
+    <option value="hpglitch">Instant HP</option>
+</select>
+<span
+    onclick="
+        window.HackInterface.Communism.marxism(
+            document.querySelector('#select').value,
+        )
+    "
+>
+    Execute </span
+><br />
+Target player[s]?:
+<select id="select1" style="color: #fff; outline: 0; background: #111111">
+    <option value="me">Self</option>
+    <option value="allme">All, except self</option>
+    <option value="all">All</option>
+</select>
+
+<p
+    title="Delays every player's movement packet on your side, so you can hit the enemies on their old positions"
+>
+    Backtrack Delay:
+    <input
+        type="range"
+        min="0"
+        max="1000"
+        value="0"
+        onchange="
+            HackInterface.Exploits.BackTrack.Delay = +this.value;
+            document.getElementById('backtrackDelayValue').innerHTML =
+                this.value;
+        "
+    />
+    <span id="backtrackDelayValue"> 0 </span>
+</p>

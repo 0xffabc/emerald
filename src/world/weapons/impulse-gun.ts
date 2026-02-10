@@ -1,5 +1,5 @@
 import { Weapons } from "../../packet/constants/weapons";
-import type { Serializer } from "../../packet/serialize/serialize";
+import { Serializer } from "../../packet/serialize/serialize";
 import { Weapon } from "../objects/weapon";
 
 export class ImpulseGun extends Weapon {
@@ -7,12 +7,12 @@ export class ImpulseGun extends Weapon {
     super();
   }
 
-  public get type(): number {
+  public override get type(): number {
     return 2;
   }
 
   public intermediateProcess(packet: Serializer): void {
-    packet.string("animation");
+    /*packet.string("animation");
 
     packet.raw([68]);
     packet.integerU32(2, false);
@@ -21,7 +21,7 @@ export class ImpulseGun extends Weapon {
     packet.string("Idle");
     packet.string("timeStamp");
 
-    packet.integerU32(1183055080);
+    packet.integerU32(1183055080);*/
   }
 
   public get id() {

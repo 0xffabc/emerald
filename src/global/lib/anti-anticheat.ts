@@ -29,19 +29,3 @@
  * Search for 'as per admanager mandate' in kogama index.html
  * However I'm not sure whether it runs on the webgl page
  */
-
-import { HackInterface } from "../interface";
-
-EventTarget.isPrototypeOf = new Proxy(EventTarget.isPrototypeOf, {
-  apply(target, thisArg, args: [v: Object]) {
-    if (args[0] === WebSocket) {
-      HackInterface.Logging.log(
-        "Bypassed first layer of anti-cheat. That doesn't sound good!",
-      );
-
-      throw new SyntaxError();
-    }
-
-    return target.apply(thisArg, args);
-  },
-});

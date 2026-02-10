@@ -1,6 +1,9 @@
 import { HackInterface } from "../../global/interface";
-import { PHOTON_FLAGS, PHOTON_HEADERS } from "../../packet/constants/photon";
 import { Weapons } from "../../packet/constants/weapons";
+import {
+  WeaponImplServer,
+  WeaponPacketType,
+} from "../../packet/impl/weapon/server";
 import { Serializer } from "../../packet/serialize/serialize";
 
 export class Weapon {
@@ -25,25 +28,9 @@ export class Weapon {
   public intermediateProcess(_packet: Serializer) {}
 
   public toFireEvent(forPlayer: number): Uint8Array {
-    const packet: Serializer = new Serializer(
-      PHOTON_HEADERS.TYPE_4,
-      PHOTON_FLAGS.ACTION,
+    return new Uint8Array(
+      new WeaponImplServer(WeaponPacketType.FIRE_EVENT, forPlayer).serialize(),
     );
-
-    packet.integerU32(forPlayer);
-    packet.integerU16(18756, false);
-
-    packet.integerU32(1, false);
-    packet.string("isFiring");
-
-    packet.integerU16(28417, false);
-
-    packet.raw([254]);
-    packet.integerU32(0);
-
-    const buffer = packet.end(false);
-
-    return new Uint8Array(buffer);
   }
 
   public toServerUseBytes(forPlayer: number): Uint8Array {
@@ -53,36 +40,12 @@ export class Weapon {
       true,
     );
 
-    const packet: Serializer = new Serializer(
-      PHOTON_HEADERS.TYPE_4,
-      PHOTON_FLAGS.ACTION,
+    return new Uint8Array(
+      new WeaponImplServer(WeaponPacketType.SET_EVENT, forPlayer, {
+        intermediateProcess: this.intermediateProcess.bind(this),
+        dataType: this.dataType,
+        id: this.id,
+      }).serialize(),
     );
-
-    packet.integerU32(forPlayer);
-    packet.string("ID", false);
-
-    packet.integerU32(this.type, false);
-    packet.string("currentItem");
-
-    packet.raw([68]);
-    packet.integerU32(this.dataType, false);
-    packet.string("type");
-
-    packet.integerU32(this.id);
-
-    packet.string("variantId");
-    packet.integerU32(0);
-
-    packet.string("updateItemState");
-    packet.integerU32(4);
-
-    this.intermediateProcess(packet);
-
-    packet.raw([254]);
-    packet.integerU32(Weapon.objectID++ % 255);
-
-    const buffer = packet.end(false);
-
-    return new Uint8Array(buffer);
   }
 }

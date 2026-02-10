@@ -9,10 +9,12 @@ test("WebSocket hook should work", () => {
   const socket = new WebSocket("ws://localhost:8080");
 
   const wrapper = hook
-    .withOnMessageHandler(() => {
+    .withOnMessageHandler((_event: MessageEvent) => {
       called = true;
 
       expect(wrapper.socket).toBe(socket);
+
+      return { result: "accept", delay: 0 };
     })
     .build();
 

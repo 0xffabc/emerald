@@ -39,6 +39,8 @@ export class Player {
     const packet = weapon.toServerUseBytes(this.id);
 
     SocketController.simulateServerPacket(Array.from(packet));
+
+    (top as any).console.log("Wrong: ", packet.join(" "));
   }
 
   public setWeapon(weapon: Weapon) {

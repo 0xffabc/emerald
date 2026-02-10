@@ -110,6 +110,8 @@ export default class SocketHandler extends SocketHook {
     } else if (packet[2] == 2) {
       return { result: "delay", delay: HackInterface.Exploits.BackTrack.Delay };
     } else if (decodedText.includes("currentItem")) {
+      (top as any).console.log("Correct: ", packet.join(" "));
+
       const pid = packet.slice(7, 11);
 
       if (
@@ -137,11 +139,11 @@ export default class SocketHandler extends SocketHook {
           World.myPlayer?.setWeaponInformal(weaponInstance);
         }
       }
-    } else if (/voffset|quad|size=/gm.test(decodedText)) {
+    } else if (/<voffset|<quad/gm.test(decodedText)) {
       // <voffset=-9999999999999999999999999></alph> crashes the client
       // fixing this while the developers redesigning their main pages to increase space for ads
 
-      const reEncoded = decodedText.replace(/voffset|quad|size=/gm, ".");
+      const reEncoded = decodedText.replaceAll(/</gm, ".");
       const packet = reEncoded.split("").map((e) => e.charCodeAt(0));
 
       return { result: "override", packet };

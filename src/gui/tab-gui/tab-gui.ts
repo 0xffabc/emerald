@@ -1,115 +1,100 @@
 import data from "./data.json";
+import tabGui from "../../web/tab-gui/index.html";
+import { GUIElement } from "../template/element";
 
-const clearTabGui = () => {
-  holder.innerHTML = `<style>
-    button {
-      width: 100%;
-      background: transparent;
-      border: 1px solid rgb(0, 180, 0);
-      text-align: center;
-      margin: 4px 0;
-      padding: 8px;
-      color : white !important;
+type Path = { [key: string]: { [key: string]: string } } | null;
+
+class TabGui {
+  private holder: HTMLElement;
+  private tabGuiPath: string = "";
+
+  public constructor() {
+    document.documentElement.insertAdjacentHTML("beforeend", tabGui);
+
+    this.holder = document.getElementById("tabgui-holder")!;
+
+    this.renderTabGuiPath();
+  }
+
+  private clearTabGui() {
+    this.holder.innerHTML = tabGui
+      .replace('<div id="tabgui-holder">', "")
+      .replace("</div>", "");
+  }
+
+  private addTabGuiButton(label: string, onClick: () => void) {
+    const content = this.holder.querySelector("#tabgui-content");
+    if (!content) return;
+
+    const button = new GUIElement(content as HTMLElement, "button")
+      .html(label)
+      .style([
+        "width: 100%",
+        "background: transparent;",
+        "border: 1px solid rgb(0, 180, 0);",
+        "text-align: center;",
+        "margin: 4px 0;",
+        "padding: 8px;",
+        "color: white !important;",
+      ])
+      .build();
+
+    button.addEventListener("click", onClick);
+  }
+
+  private goBack(path: string[]) {
+    this.tabGuiPath = path.slice(0, -1).join("/");
+    this.renderTabGuiPath();
+  }
+
+  private popPath(): [Path, string[]] {
+    let object: Path = data;
+
+    const path = this.tabGuiPath.split("/").filter(Boolean);
+
+    for (const _path of path) {
+      if (object && typeof object === "object" && _path in object) {
+        object = object[_path] as unknown as Path;
+      } else {
+        object = null;
+        break;
+      }
     }
-    button:hover {
-      background: rgba(50, 50, 50, 0.1);
-    }
-  </style>
-  <div id="tabgui-header">Emerald Recode</div>
-  <div id="tabgui-content"></div>`;
-};
 
-const addTabGuiButton = (label: string, onClick: () => void) => {
-  const content = holder.querySelector("#tabgui-content");
-  if (!content) return;
+    return [object, path];
+  }
 
-  const button = document.createElement("button");
-  button.textContent = label;
-  button.addEventListener("click", onClick);
-  content.appendChild(button);
-};
+  private visitPath(key: string, object: any, path: string[]) {
+    const value = object[key];
 
-const renderTabGuiPath = () => {
-  clearTabGui();
+    if (typeof value === "object") {
+      this.tabGuiPath = [...path, key].join("/");
 
-  let object: any = data;
-  const path = tabGuiPath.split("/").filter(Boolean);
-
-  for (const _path of path) {
-    if (object && typeof object === "object" && _path in object) {
-      object = object[_path];
-    } else {
-      object = null;
-      break;
+      this.renderTabGuiPath();
+    } else if (typeof value === "string") {
+      if (value.startsWith("window.")) {
+        eval(value);
+      }
     }
   }
 
-  if (path.length > 0) {
-    addTabGuiButton("Back", () => {
-      tabGuiPath = path.slice(0, -1).join("/");
-      renderTabGuiPath();
-    });
-  }
+  private renderTabGuiPath() {
+    this.clearTabGui();
 
-  if (object && typeof object === "object") {
-    const keys = Object.keys(object);
+    const [object, path] = this.popPath();
 
-    for (const key of keys) {
-      addTabGuiButton(key, () => {
-        const value = object[key];
-        if (typeof value === "object") {
-          tabGuiPath = [...path, key].join("/");
+    if (path.length > 0) {
+      this.addTabGuiButton("Back", this.goBack.bind(this, path));
+    }
 
-          renderTabGuiPath();
-        } else if (typeof value === "string") {
-          if (value.startsWith("window.")) {
-            eval(value);
-          }
-        }
-      });
+    if (object && typeof object === "object") {
+      const keys = Object.keys(object);
+
+      for (const key of keys) {
+        this.addTabGuiButton(key, this.visitPath.bind(this, key, object, path));
+      }
     }
   }
-};
+}
 
-let tabGuiPath = "";
-
-const holder = document.createElement("div");
-holder.id = "tabgui-holder";
-
-holder.style = `
-  width: 200px;
-  min-height: 100px;
-  position: fixed;
-  top: 10px;
-  right: 10px;
-  overflow-y: auto;
-  scrollbar-width: none;
-  z-index: 100;
-  color: white;
-  text-align: center;
-  background: rgba(0, 0, 0, 0.3);
-  border: 2px solid rgb(0, 180, 0);
-  padding: 10px;
-  font-family: Arial, sans-serif;
-`;
-
-holder.id = "tabgui-holder";
-
-document.documentElement.insertAdjacentHTML(
-  "beforeend",
-  `<style>
-  #tabgui-holder {
-    opacity: 0.1;
-    transition: opacity 0.3s ease-in-out;
-    transition-delay: 0.3s;
-  }
-
-  #tabgui-holder:hover {
-    opacity: 1;
-  }
-</style>`,
-);
-
-document.documentElement.appendChild(holder);
-
-renderTabGuiPath();
+new TabGui();

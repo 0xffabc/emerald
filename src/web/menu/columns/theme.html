@@ -1,0 +1,22 @@
+<textarea
+    id="themeEditor"
+    style="
+        width: calc(100% - 15px);
+        height: 87%;
+        resize: none;
+        outline: none;
+        background: transparent;
+        border: none;
+        backdrop-filter: blur(10px);
+        color: white;
+        scrollbar-width: none;
+    "
+    onchange="
+        localStorage.setItem('{MENU_THEME_KEY}', this.value);
+        document.getElementById('lastThemeUpdate').textContent =
+            'Last update: ' + Date.now().toString(36);
+    "
+>
+{THEME_CODE}</textarea
+>
+<span id="lastThemeUpdate">Last update: {LAST_UPDATE}</span>

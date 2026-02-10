@@ -1,0 +1,10 @@
+<span style="font-size: 18px"> Cube-Gun tools </span> <br />
+Cube-Gun material code:
+<input
+    type="number"
+    onchange="
+        HackInterface.Weapons.CubeGunMaterial = +this.value;
+        HackInterface.Weapons.CubeGun(+this.value);
+    "
+    style="color: #fff; outline: 0; background: #111111"
+/>

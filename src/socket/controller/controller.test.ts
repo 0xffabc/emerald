@@ -8,8 +8,10 @@ test("SocketController should be able to simulate receive", () => {
   const socket = new WebSocket("ws://localhost:8080");
 
   hook
-    .withOnMessageHandler(() => {
+    .withOnMessageHandler((_event: MessageEvent) => {
       expect(true).toBe(true);
+
+      return { result: "accept", delay: 0 };
     })
     .build();
 
