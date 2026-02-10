@@ -1,10 +1,14 @@
+import { HackInterface } from "../../global/interface";
+import { Intermediate } from "../../gui/intermediate";
 import { ImmortalityExploit } from "../../hack/exploits/immortality";
 import { InfiniteWeaponExploit } from "../../hack/exploits/infinite-weapon";
 import { InvisibleHitExploit } from "../../hack/exploits/invisible-hit";
 import { RapidFireExploit } from "../../hack/exploits/rapid-fire";
+import { WeaponMerger } from "../../hack/exploits/weapon-merger";
 import { to32xConvertedByte } from "../../packet/core/utils";
 import { Mix } from "../../packet/mix/mix";
 import SocketController from "../../socket/controller/controller";
+import { CentralGun } from "../weapons/central-gun";
 import type { Weapon } from "./weapon";
 
 export class Player {
@@ -51,6 +55,19 @@ export class Player {
     SocketController.simulateServerPacket(Array.from(packet));
 
     (top as any).console.log("Wrong: ", packet.join(" "));
+  }
+
+  public setWeaponTo(weaponName: string) {
+    const weaponInstance = WeaponMerger.nameToWeapon(weaponName);
+
+    if (
+      HackInterface.Exploits.RapidFire.status == "Paused" ||
+      !(weaponInstance instanceof CentralGun)
+    ) {
+      Intermediate.notification(`${weaponInstance.toString()}`);
+
+      this.setWeaponInformal(weaponInstance);
+    }
   }
 
   /**

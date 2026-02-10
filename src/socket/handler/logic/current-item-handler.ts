@@ -1,9 +1,5 @@
-import { HackInterface } from "../../../global/interface";
-import { Intermediate } from "../../../gui/intermediate";
-import { WeaponMerger } from "../../../hack/exploits/weapon-merger";
 import { Weapons } from "../../../packet/constants/weapons";
 import { Deserializer } from "../../../packet/deserialize/deserialize";
-import { CentralGun } from "../../../world/weapons/central-gun";
 import { World } from "../../../world/world";
 import { HandlerResponse } from "../handler/response-factory";
 
@@ -15,24 +11,28 @@ export class ReceiveCurrentItem extends Deserializer {
   private readonly INTEGER_LENGTH = 4;
 
   private byteArrToInteger(byteArr: number[]) {
-    return new Uint32Array(new Uint8Array(byteArr.reverse()).buffer)[0];
+    if (byteArr.length !== this.INTEGER_LENGTH) {
+      throw new Error("Invalid byte array length");
+    }
+
+    return new Uint32Array(new Uint8Array(byteArr.toReversed()).buffer)[0];
   }
 
-  private getPidArr() {
+  private getPidArr(): number[] {
     const pidIndex = this.getNthU32(0).index + 1;
     const pid = this.packet.slice(pidIndex, pidIndex + this.INTEGER_LENGTH);
 
     return pid;
   }
 
-  private getItemIdArr() {
+  private getItemId(): number {
     const itemIdIndex = this.getNthU32(1).index + 1;
     const itemIdArr = this.packet.slice(
       itemIdIndex,
       itemIdIndex + this.INTEGER_LENGTH,
     );
 
-    return new Uint32Array(new Uint8Array(itemIdArr.reverse()).buffer)[0];
+    return this.byteArrToInteger(itemIdArr);
   }
 
   /**
@@ -46,8 +46,10 @@ export class ReceiveCurrentItem extends Deserializer {
   public handleCurrentItem() {
     const pid = this.getPidArr();
 
-    if (World?.myPlayer?.id! == this.byteArrToInteger(pid)) {
-      const itemId = this.getItemIdArr();
+    if (!World.myPlayer?.id) return HandlerResponse.accept();
+
+    if (World.myPlayer.id == this.byteArrToInteger(pid)) {
+      const itemId = this.getItemId();
 
       const weaponName = Weapons[itemId];
 
@@ -55,16 +57,7 @@ export class ReceiveCurrentItem extends Deserializer {
         return HandlerResponse.accept();
       }
 
-      const weaponInstance = WeaponMerger.nameToWeapon(weaponName);
-
-      if (
-        HackInterface.Exploits.RapidFire.status == "Paused" ||
-        !(weaponInstance instanceof CentralGun)
-      ) {
-        Intermediate.notification(`${weaponInstance.toString()}`);
-
-        World.myPlayer?.setWeaponInformal(weaponInstance);
-      }
+      World.myPlayer.setWeaponTo(weaponName);
     }
   }
 }
