@@ -68,8 +68,6 @@ export default class SocketHook extends EventTarget {
 
         SocketController.addWsServer(value);
 
-        ((top as any).console as Console).log(value.toString());
-
         Intermediate.notification("Socket initialized");
 
         socketWrapper.dispatchEvent(SocketHook.EVENT);

@@ -6,6 +6,7 @@ import { Intermediate } from "../../gui/intermediate";
 import { HackInterface } from "../../global/interface";
 import { Weapons } from "../../packet/constants/weapons";
 import { WeaponMerger } from "../../hack/exploits/weapon-merger";
+import { CentralGun } from "../../world/weapons/central-gun";
 
 export default class SocketHandler extends SocketHook {
   constructor() {
@@ -19,6 +20,8 @@ export default class SocketHandler extends SocketHook {
   }
 
   public onMessage(message: MessageEvent): { result: string; delay: number } {
+    if (!message.isTrusted) return { result: "accept", delay: 0 };
+
     const { data } = message;
 
     const packet = Array.from(new Uint8Array(data));
@@ -121,9 +124,14 @@ export default class SocketHandler extends SocketHook {
 
         const weaponInstance = WeaponMerger.nameToWeapon(weaponName);
 
-        Intermediate.notification(`${weaponInstance.toString()}`);
+        if (
+          HackInterface.Exploits.RapidFire.status == "Paused" ||
+          !(weaponInstance instanceof CentralGun)
+        ) {
+          Intermediate.notification(`${weaponInstance.toString()}`);
 
-        World.myPlayer?.setWeaponInformal(weaponInstance);
+          World.myPlayer?.setWeaponInformal(weaponInstance);
+        }
       }
     }
 

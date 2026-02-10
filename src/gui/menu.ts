@@ -70,9 +70,6 @@ client_menu.innerHTML = `
         <p style="font-weight: bold;"> Destruction </p>
         <span onclick = "window.HackInterface.Exploits.Immortality()"> Immortality: Physical</span> <br>
 
-       <span onclick = "top.packets.impulse_tool()"> Combat Module</span><br>
-       <span onclick = "top.packets.kick_all()"> Crash </span>
-       <span onclick = "top.packets.antirfire()"> AntiWeapon </span> <br>
 
        <span onclick = "window.HackInterface.Exploits.RandomHP.flip(); window.HackInterface.Exploits.RandomHP.updateStatusTo('randomHPStatus')"> Random HP: <span id = "randomHPStatus"> Paused </span> </span> <br>
        <input type = "range" min = "0" max = "4000" value = "1000" oninput="window.HackInterface.Exploits.InfiniteWeapon.updateRate(this.value, 'randomHPRate')"> <span> Infinite fire rate/ms: <span id="randomHPRate">1000</span> </span>
