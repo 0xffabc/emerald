@@ -2,19 +2,22 @@ export class MouseListener {
   protected mouseDownListeners: Array<(event: MouseEvent) => void> = [];
   protected mouseUpListeners: Array<(event: MouseEvent) => void> = [];
 
-  constructor() {
+  private readonly LEFT_MOUSE_BUTTON = 0;
+  private readonly RIGHT_MOUSE_BUTTON = 2;
+
+  public constructor() {
     const mouseDownListener = (event: MouseEvent) => {
-      if (event.button === 0) {
+      if (event.button === this.LEFT_MOUSE_BUTTON) {
         this.onLeftMouseDown();
-      } else if (event.button === 2) {
+      } else if (event.button === this.RIGHT_MOUSE_BUTTON) {
         this.onRightMouseDown();
       }
     };
 
     const mouseUpListener = (event: MouseEvent) => {
-      if (event.button === 0) {
+      if (event.button === this.LEFT_MOUSE_BUTTON) {
         this.onLeftMouseUp();
-      } else if (event.button === 2) {
+      } else if (event.button === this.RIGHT_MOUSE_BUTTON) {
         this.onRightMouseUp();
       }
     };

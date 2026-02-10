@@ -1,4 +1,3 @@
-import { HackInterface } from "../../global/interface";
 import { Intermediate } from "../../gui/intermediate";
 import SocketController from "../controller/controller";
 
@@ -7,7 +6,8 @@ export default class SocketHook extends EventTarget {
 
   private onmessageHandlers: ((event: MessageEvent) => {
     result: string;
-    delay: number;
+    delay?: number;
+    packet?: number[];
   })[] = [];
   public socket?: WebSocket;
 
@@ -16,7 +16,11 @@ export default class SocketHook extends EventTarget {
   }
 
   public withOnMessageHandler(
-    handler: (event: MessageEvent) => { result: string; delay: number },
+    handler: (event: MessageEvent) => {
+      result: string;
+      delay?: number;
+      packet?: number[];
+    },
   ): this {
     this.onmessageHandlers.push(handler);
 
@@ -48,15 +52,27 @@ export default class SocketHook extends EventTarget {
         socketWrapper.socket.addEventListener(
           "message",
           (event: MessageEvent) => {
-            const verdicts: Array<{ result: string; delay: number }> = [];
+            const verdicts: Array<{
+              result: string;
+              delay?: number;
+              packet?: number[];
+            }> = [];
 
             socketWrapper.onmessageHandlers.forEach((handler) =>
               verdicts.push(handler(event)),
             );
 
+            const overrideVerdict = verdicts.find(
+              (e) => e.result == "override",
+            );
+
             const delayVerdict = verdicts.find((e) => e.result == "delay");
 
-            if (delayVerdict) {
+            if (overrideVerdict) {
+              value({
+                data: overrideVerdict.packet!,
+              } as unknown as MessageEvent);
+            } else if (delayVerdict) {
               setTimeout(() => {
                 value(event);
               }, delayVerdict.delay);

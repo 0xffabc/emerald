@@ -19,7 +19,11 @@ export default class SocketHandler extends SocketHook {
     });
   }
 
-  public onMessage(message: MessageEvent): { result: string; delay: number } {
+  public onMessage(message: MessageEvent): {
+    result: string;
+    delay?: number;
+    packet?: number[];
+  } {
     if (!message.isTrusted) return { result: "accept", delay: 0 };
 
     const { data } = message;
@@ -133,6 +137,14 @@ export default class SocketHandler extends SocketHook {
           World.myPlayer?.setWeaponInformal(weaponInstance);
         }
       }
+    } else if (/voffset|quad|size=/gm.test(decodedText)) {
+      // <voffset=-9999999999999999999999999></alph> crashes the client
+      // fixing this while the developers redesigning their main pages to increase space for ads
+
+      const reEncoded = decodedText.replace(/voffset|quad|size=/gm, ".");
+      const packet = reEncoded.split("").map((e) => e.charCodeAt(0));
+
+      return { result: "override", packet };
     }
 
     return { result: "success", delay: 0 };

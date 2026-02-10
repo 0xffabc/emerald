@@ -1,7 +1,7 @@
 export class GUITemplate {
   protected element: HTMLDivElement = document.createElement("div");
 
-  constructor() {
+  public constructor() {
     this.element.style = [
       "position: fixed",
       "color: #fff",

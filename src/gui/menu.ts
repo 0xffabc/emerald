@@ -9,19 +9,21 @@ import defaultTheme from "./theme/default.json";
 class ClientMenu extends GUITemplate {
   private theme: typeof defaultTheme | undefined;
 
+  private readonly MENU_THEME_KEY = "menu-theme";
+
   private queryTheme() {
-    const theme = localStorage.getItem("menu-theme");
+    const theme = localStorage.getItem(this.MENU_THEME_KEY);
 
     if (theme) {
       this.theme = JSON.parse(theme);
     } else {
       this.theme = defaultTheme;
 
-      localStorage.setItem("menu-theme", JSON.stringify(this.theme));
+      localStorage.setItem(this.MENU_THEME_KEY, JSON.stringify(this.theme));
     }
   }
 
-  constructor() {
+  public constructor() {
     super();
 
     this.queryTheme();
@@ -343,7 +345,7 @@ class ClientMenu extends GUITemplate {
           backdrop-filter: blur(10px);
           color: white;
           scrollbar-width: none;
-        " onchange="localStorage.setItem('menu-theme', this.value);
+        " onchange="localStorage.setItem('${this.MENU_THEME_KEY}', this.value);
         document.getElementById('lastThemeUpdate').textContent = 'Last update: ' + Date.now().toString(36)">${JSON.stringify(this.theme, null, 2)}</textarea>
         <span id = "lastThemeUpdate">Last update: ${Date.now().toString(16)}</span>
         `,
