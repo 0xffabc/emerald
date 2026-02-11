@@ -1,16 +1,16 @@
 import { HackInterface } from "../../global/interface";
-import { Weapons } from "../../packet/constants/weapons";
 import {
   WeaponImplServerSerializer,
   WeaponPacketType,
 } from "../../packet/impl/weapon/server";
 import { Serializer } from "../../packet/serialize/serialize";
+import { World } from "../world";
 
 export class Weapon {
   public static objectID = 0;
 
   public get id(): number {
-    return Weapons.NONE;
+    return World.weaponProvider.getWeaponIdByName("NONE")!;
   }
 
   public get type(): number {
@@ -27,7 +27,7 @@ export class Weapon {
    * @returns {string} The string representation of the weapon.
    */
   public toString(): string {
-    return `Weapon(name=${Weapons[this.id] ?? "Unknown"}, id=${this.id})`;
+    return `Weapon(name=${World.weaponProvider.getWeaponNameById(this.id) ?? "Unknown"}, id=${this.id})`;
   }
 
   public intermediateProcess(_packet: Serializer) {}
