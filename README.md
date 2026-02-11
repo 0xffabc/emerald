@@ -2,7 +2,7 @@
 
 Seals havoc and grief all around the children game made by multiverse ApS
 
-> [!HINT]
+> ![TIP]
 > Pro tip: <vsize=-999999999999999999></alph>. You know what to do.
 
 <img width="640" height="480" alt="image" src="https://github.com/user-attachments/assets/7001465b-953f-458d-a3e4-b45c9ea96416" />
