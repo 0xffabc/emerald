@@ -1,38 +1,12 @@
 import { Weapons } from "../../../packet/constants/weapons";
 import { Deserializer } from "../../../packet/deserialize/deserialize";
+import { WeaponImplServerDeserializer } from "../../../packet/impl/weapon/server";
 import { World } from "../../../world/world";
 import { HandlerResponse } from "../handler/response-factory";
 
 export class ReceiveCurrentItem extends Deserializer {
   constructor(packet: number[]) {
     super(packet);
-  }
-
-  private readonly INTEGER_LENGTH = 4;
-
-  private byteArrToInteger(byteArr: number[]) {
-    if (byteArr.length !== this.INTEGER_LENGTH) {
-      throw new Error("Invalid byte array length");
-    }
-
-    return new Uint32Array(new Uint8Array(byteArr.toReversed()).buffer)[0];
-  }
-
-  private getPidArr(): number[] {
-    const pidIndex = this.getNthU32(0).index + 1;
-    const pid = this.packet.slice(pidIndex, pidIndex + this.INTEGER_LENGTH);
-
-    return pid;
-  }
-
-  private getItemId(): number {
-    const itemIdIndex = this.getNthU32(1).index + 1;
-    const itemIdArr = this.packet.slice(
-      itemIdIndex,
-      itemIdIndex + this.INTEGER_LENGTH,
-    );
-
-    return this.byteArrToInteger(itemIdArr);
   }
 
   /**
@@ -44,12 +18,14 @@ export class ReceiveCurrentItem extends Deserializer {
    * @returns
    */
   public handleCurrentItem() {
-    const pid = this.getPidArr();
+    const deserializer = new WeaponImplServerDeserializer(this.packet);
+
+    const pid = deserializer.getPid();
 
     if (!World.myPlayer?.id) return HandlerResponse.accept();
 
-    if (World.myPlayer.id == this.byteArrToInteger(pid)) {
-      const itemId = this.getItemId();
+    if (World.myPlayer.id == pid) {
+      const itemId = deserializer.getItemId();
 
       const weaponName = Weapons[itemId];
 

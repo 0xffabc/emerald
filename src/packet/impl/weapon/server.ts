@@ -1,4 +1,5 @@
 import { PHOTON_FLAGS, PHOTON_HEADERS } from "../../constants/photon";
+import { Deserializer } from "../../deserialize/deserialize";
 import { Serializer } from "../../serialize/serialize";
 
 export enum WeaponPacketType {
@@ -12,7 +13,40 @@ type WeaponImplConfig = {
   id?: number;
 };
 
-export class WeaponImplServer extends Serializer {
+export class WeaponImplServerDeserializer extends Deserializer {
+  constructor(packet: number[]) {
+    super(packet);
+  }
+
+  private readonly INTEGER_LENGTH = 4;
+
+  private byteArrToInteger(byteArr: number[]) {
+    if (byteArr.length !== this.INTEGER_LENGTH) {
+      throw new Error("Invalid byte array length");
+    }
+
+    return new Uint32Array(new Uint8Array(byteArr.toReversed()).buffer)[0];
+  }
+
+  public getPid(): number {
+    const pidIndex = this.getNthU32(0).index + 1;
+    const pid = this.packet.slice(pidIndex, pidIndex + this.INTEGER_LENGTH);
+
+    return this.byteArrToInteger(pid);
+  }
+
+  public getItemId(): number {
+    const itemIdIndex = this.getNthU32(1).index + 1;
+    const itemIdArr = this.packet.slice(
+      itemIdIndex,
+      itemIdIndex + this.INTEGER_LENGTH,
+    );
+
+    return this.byteArrToInteger(itemIdArr);
+  }
+}
+
+export class WeaponImplServerSerializer extends Serializer {
   private pid: number;
   private type: WeaponPacketType;
   private config: WeaponImplConfig;

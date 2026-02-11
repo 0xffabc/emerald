@@ -1,7 +1,7 @@
 import { HackInterface } from "../../global/interface";
 import { Weapons } from "../../packet/constants/weapons";
 import {
-  WeaponImplServer,
+  WeaponImplServerSerializer,
   WeaponPacketType,
 } from "../../packet/impl/weapon/server";
 import { Serializer } from "../../packet/serialize/serialize";
@@ -40,7 +40,10 @@ export class Weapon {
    */
   public toFireEvent(forPlayer: number): Uint8Array {
     return new Uint8Array(
-      new WeaponImplServer(WeaponPacketType.FIRE_EVENT, forPlayer).serialize(),
+      new WeaponImplServerSerializer(
+        WeaponPacketType.FIRE_EVENT,
+        forPlayer,
+      ).serialize(),
     );
   }
 
@@ -58,7 +61,7 @@ export class Weapon {
     );
 
     return new Uint8Array(
-      new WeaponImplServer(WeaponPacketType.SET_EVENT, forPlayer, {
+      new WeaponImplServerSerializer(WeaponPacketType.SET_EVENT, forPlayer, {
         intermediateProcess: this.intermediateProcess.bind(this),
         dataType: this.dataType,
         id: this.id,
