@@ -1,13 +1,20 @@
-import { Weapons } from "../../../packet/constants/weapons";
 import { WeaponImplServerDeserializer } from "../../../packet/impl/weapon/server";
-import { World } from "../../../world/world";
-import { HandlerResponse } from "../handler/response-factory";
+import type { IWeaponProvider } from "../../../types/weapon-provider";
+import type { Player } from "../../../world/objects/player";
+import {
+  HandlerResponse,
+  type HandlerResult,
+} from "../handler/response-factory";
 
 export class ReceiveCurrentItem {
   private packet: number[];
+  private player: Player;
+  private weapons: IWeaponProvider;
 
-  constructor(packet: number[]) {
+  constructor(packet: number[], player: Player, weapons: IWeaponProvider) {
     this.packet = packet;
+    this.player = player;
+    this.weapons = weapons;
   }
 
   /**
@@ -18,23 +25,23 @@ export class ReceiveCurrentItem {
    * @param packet
    * @returns
    */
-  public handleCurrentItem() {
+  public handleCurrentItem(): HandlerResult {
     const deserializer = new WeaponImplServerDeserializer(this.packet);
 
     const pid = deserializer.getPid();
 
-    if (!World.myPlayer?.id) return HandlerResponse.accept();
-
-    if (World.myPlayer.id == pid) {
+    if (this.player.id == pid) {
       const itemId = deserializer.getItemId();
 
-      const weaponName = Weapons[itemId];
+      const weaponName = this.weapons.getWeaponNameById(itemId);
 
       if (!weaponName) {
         return HandlerResponse.accept();
       }
 
-      World.myPlayer.setWeaponTo(weaponName);
+      this.player.setWeaponTo(weaponName);
     }
+
+    return HandlerResponse.accept();
   }
 }

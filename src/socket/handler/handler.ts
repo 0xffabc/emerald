@@ -70,7 +70,11 @@ export default class SocketHandler extends SocketHook {
 
         break;
       case ServerPackets.USE_WEAPON:
-        const receiver = new ReceiveCurrentItem(packet);
+        const receiver = new ReceiveCurrentItem(
+          packet,
+          World.myPlayer!,
+          World.weaponProvider,
+        );
 
         receiver.handleCurrentItem();
 

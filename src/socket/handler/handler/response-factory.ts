@@ -9,6 +9,10 @@ export class HandlerResponse {
     return { result: "accept", delay: 0 };
   }
 
+  static skip(): HandlerResult {
+    return { result: "accept", delay: 0 };
+  }
+
   static delay(delay: number): HandlerResult {
     return { result: "delay", delay };
   }
