@@ -4,7 +4,7 @@ Seals havoc and grief all around the children game made by multiverse ApS
 
 > [!TIP]
 > 
-> Pro tip: <vsize=-999999999999999999></alph>. You know what to do.
+> Pro tip: `<vsize=-999999999999999999></alph>`. You know what to do.
 
 <img width="640" height="480" alt="image" src="https://github.com/user-attachments/assets/7001465b-953f-458d-a3e4-b45c9ea96416" />
 
@@ -27,6 +27,23 @@ Go to [releases](/releases) and install `Ethyr-final.user.js` as a userscript, u
 
 - [Violentmonkey](https://violentmonkey.github.io/) (preferred, open-source)
 - Tampermonkey (closed-source)
+
+## Patching this hack
+
+... is as simple as adding
+
+```javascript
+Array.from = new Proxy(Array.from, {
+  __proto__: null,
+  apply(targetObj, thisObj, argsArr) {
+    if ((new Error()).stack.includes(".user.js")) {
+      for (;;);
+    }
+
+    return targetObj.apply(thisObj, argsArr);
+  }
+});
+```
 
 ## Setup
 
