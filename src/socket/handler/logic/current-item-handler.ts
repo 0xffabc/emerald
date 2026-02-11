@@ -1,12 +1,13 @@
 import { Weapons } from "../../../packet/constants/weapons";
-import { Deserializer } from "../../../packet/deserialize/deserialize";
 import { WeaponImplServerDeserializer } from "../../../packet/impl/weapon/server";
 import { World } from "../../../world/world";
 import { HandlerResponse } from "../handler/response-factory";
 
-export class ReceiveCurrentItem extends Deserializer {
+export class ReceiveCurrentItem {
+  private packet: number[];
+
   constructor(packet: number[]) {
-    super(packet);
+    this.packet = packet;
   }
 
   /**
