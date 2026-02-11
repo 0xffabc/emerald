@@ -38,11 +38,11 @@ export class WeaponProvider implements IWeaponProvider {
     this.weapons.set(Weapons.SHURIKEN, "SHURIKEN");
   }
 
-  getWeaponNameById(id: number): string | undefined {
+  public getWeaponNameById(id: number): string | undefined {
     return this.weapons.get(id);
   }
 
-  getWeaponIdByName(name: string): number | undefined {
+  public getWeaponIdByName(name: string): number | undefined {
     return Array.from(this.weapons.entries()).find(
       ([_, value]) => value === name,
     )?.[0];

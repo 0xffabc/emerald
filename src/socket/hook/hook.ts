@@ -9,6 +9,7 @@ export default class SocketHook extends EventTarget {
     delay?: number;
     packet?: number[];
   })[] = [];
+
   public socket?: WebSocket;
 
   constructor() {
